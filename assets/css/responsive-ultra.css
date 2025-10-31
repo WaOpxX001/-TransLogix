@@ -15,154 +15,106 @@ html {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* No modificar el diseño base en desktop */
-
-/* === MÓVILES (320px - 480px) === */
-@media (max-width: 480px) {
-    html {
-        font-size: 14px;
+/* === MÓVILES (320px - 768px) === */
+@media (max-width: 768px) {
+    /* Ocultar sidebar overlay que causa pantalla negra */
+    .sidebar-overlay {
+        display: none !important;
     }
     
-    :root {
-        --sidebar-width: 100%;
-        --card-gap: 12px;
-    }
-    
+    /* Main content sin margen */
     .main-content {
-        padding: 12px;
         margin-left: 0 !important;
+        padding: 15px;
     }
     
-    /* Sidebar móvil mejorado */
+    /* Sidebar oculto por defecto en móvil */
     .sidebar {
-        width: 280px !important;
-        max-width: 85vw !important;
-        position: fixed !important;
+        position: fixed;
         left: -100%;
+        width: 280px;
+        max-width: 85vw;
         top: 0;
         bottom: 0;
-        transition: left 0.3s ease, box-shadow 0.3s ease;
-        z-index: 10000;
-        background: var(--dark-bg-primary, #1e293b) !important;
-        box-shadow: none;
+        z-index: 9999;
+        transition: left 0.3s ease;
     }
     
     .sidebar.show {
         left: 0;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.3);
     }
     
-    /* Overlay para cerrar sidebar */
-    .sidebar-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.5);
-        z-index: 9999;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    
-    .sidebar-overlay.show {
-        display: block;
-        opacity: 1;
-    }
-    
-    /* Botón de toggle móvil */
+    /* Botón de menú móvil */
     .mobile-toggle {
+        display: block !important;
         position: fixed;
         top: 10px;
         left: 10px;
         z-index: 9998;
-        background: var(--primary, #6366f1);
+        background: #6366f1;
         color: white;
         border: none;
-        border-radius: 8px;
         padding: 10px 15px;
+        border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        cursor: pointer;
-        transition: all 0.3s ease;
     }
     
-    .mobile-toggle:hover {
-        background: var(--primary-dark, #4f46e5);
-        transform: scale(1.05);
-    }
-    
-    .mobile-toggle i {
-        font-size: 1.2rem;
-    }
-    
-    .table-responsive {
-        font-size: 0.85rem;
-    }
-    
-    .btn {
-        padding: 8px 12px;
-        font-size: 0.85rem;
-    }
-    
-    .card {
-        margin-bottom: 12px;
-    }
-    
-    .modal-dialog {
-        margin: 10px;
-    }
-    
-    /* Ocultar columnas menos importantes en móvil */
-    .table .d-none-mobile {
-        display: none !important;
-    }
-    
-    /* Stack de botones en móvil - MEJORADO */
+    /* BOTONES VISIBLES EN MÓVIL */
     .btn-group {
         display: flex !important;
         flex-wrap: wrap !important;
-        gap: 4px !important;
-        width: 100% !important;
+        gap: 6px !important;
+        width: 100%;
     }
     
     .btn-group .btn {
-        flex: 1 1 auto !important;
-        min-width: 40px !important;
-        border-radius: 6px !important;
-        margin: 0 !important;
-        padding: 8px 10px !important;
-        font-size: 0.85rem !important;
+        flex: 1 1 calc(33.333% - 4px) !important;
+        min-width: 0 !important;
+        padding: 8px 6px !important;
+        font-size: 0.75rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
     
-    /* Mostrar solo iconos en botones pequeños */
-    .btn-group .btn span:not(.badge) {
-        display: none;
+    /* Asegurar que TODOS los botones sean visibles */
+    .btn-outline-primary,
+    .btn-outline-warning,
+    .btn-outline-danger,
+    .btn-outline-info,
+    .btn-outline-success,
+    .btn-primary,
+    .btn-warning,
+    .btn-danger,
+    .btn-info,
+    .btn-success {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
     
-    .btn-group .btn i {
-        margin: 0 !important;
+    /* Iconos visibles */
+    .fa-eye,
+    .fa-edit,
+    .fa-trash,
+    .fa-check,
+    .fa-times,
+    .fas,
+    .far {
+        display: inline-block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
     
-    /* Tablas responsive mejoradas */
-    .table-responsive {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    .table {
-        min-width: 600px;
-    }
-    
-    /* Cards de gastos/vehículos en móvil */
+    /* Cards móviles */
     .mobile-expense-card,
     .mobile-vehicle-card {
-        margin-bottom: 12px;
-        padding: 12px;
+        margin-bottom: 15px;
+        padding: 15px;
     }
     
-    .mobile-expense-card .btn-group,
-    .mobile-vehicle-card .btn-group {
+    .mobile-expense-card .d-flex.gap-2,
+    .mobile-vehicle-card .d-flex.gap-2 {
         display: flex !important;
         flex-wrap: wrap !important;
         gap: 6px !important;
@@ -170,87 +122,50 @@ html {
     
     .mobile-expense-card .btn,
     .mobile-vehicle-card .btn {
-        flex: 1 1 calc(50% - 3px) !important;
+        flex: 1 1 calc(33.333% - 4px) !important;
         min-width: 0 !important;
-        font-size: 0.8rem !important;
-        padding: 6px 8px !important;
-    }
-}
-
-/* === MÓVILES GRANDES (481px - 767px) === */
-@media (min-width: 481px) and (max-width: 767px) {
-    html {
-        font-size: 15px;
+        padding: 8px 6px !important;
+        font-size: 0.75rem !important;
     }
     
-    :root {
-        --sidebar-width: 100%;
-        --card-gap: 16px;
+    /* REPORTES - Tabla con scroll */
+    #reportesSection .table-responsive {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
     }
     
-    .main-content {
-        padding: 16px;
-        margin-left: 0 !important;
+    #reportesSection table {
+        min-width: 700px;
+        font-size: 0.85rem;
     }
     
-    /* Sidebar móvil */
-    .sidebar {
-        width: 300px !important;
-        max-width: 85vw !important;
-        position: fixed !important;
-        left: -100%;
-        top: 0;
-        bottom: 0;
-        transition: left 0.3s ease;
-        z-index: 10000;
-        background: var(--dark-bg-primary, #1e293b) !important;
-    }
-    
-    .sidebar.show {
-        left: 0;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-    }
-    
-    /* Overlay */
-    .sidebar-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.5);
-        z-index: 9999;
-    }
-    
-    .sidebar-overlay.show {
-        display: block;
-    }
-    
-    /* Botón toggle */
-    .mobile-toggle {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        z-index: 9998;
-        background: var(--primary, #6366f1);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 15px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-    
-    /* Botones en grupo */
-    .btn-group {
+    /* GASTOS - Botones visibles */
+    #gastosSection .mobile-expense-card .btn-group {
         display: flex !important;
         flex-wrap: wrap !important;
         gap: 6px !important;
     }
     
-    .btn-group .btn {
-        flex: 1 1 auto !important;
-        min-width: 45px !important;
+    #gastosSection .btn-outline-danger,
+    #gastosSection .btn-danger {
+        display: flex !important;
+    }
+    
+    /* VEHÍCULOS - Botones visibles */
+    #vehiculosSection .btn-outline-warning,
+    #vehiculosSection .btn-outline-danger {
+        display: flex !important;
+    }
+    
+    /* Modales en móvil */
+    .modal-dialog {
+        max-width: 95%;
+        margin: 10px auto;
+    }
+    
+    .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
     }
 }
 
@@ -272,45 +187,16 @@ html {
     .sidebar {
         width: var(--sidebar-width);
     }
+}
+
+/* === DESKTOP (1025px+) === */
+@media (min-width: 1025px) {
+    .mobile-toggle {
+        display: none !important;
+    }
     
-    /* Grid de 2 columnas en tablets */
-    .row-cols-md-2 > * {
-        flex: 0 0 50%;
-        max-width: 50%;
-    }
-}
-
-/* === LAPTOPS / HD (1025px - 1366px) === */
-@media (min-width: 1025px) and (max-width: 1366px) {
-    /* Mantener diseño original */
-}
-
-/* === FULL HD (1367px - 1920px) === */
-@media (min-width: 1367px) and (max-width: 1920px) {
-    /* Mantener diseño original */
-}
-
-/* === 2K / QHD (1921px - 2560px) === */
-@media (min-width: 1921px) and (max-width: 2560px) {
-    /* Escalar ligeramente para pantallas grandes */
-    html {
-        font-size: 17px;
-    }
-}
-
-/* === 4K / UHD (2561px - 3840px) === */
-@media (min-width: 2561px) and (max-width: 3840px) {
-    /* Escalar para 4K */
-    html {
-        font-size: 18px;
-    }
-}
-
-/* === 8K (3841px+) === */
-@media (min-width: 3841px) {
-    /* Escalar para 8K */
-    html {
-        font-size: 20px;
+    .sidebar-overlay {
+        display: none !important;
     }
 }
 
@@ -337,22 +223,11 @@ html {
 
 /* === TOUCH DEVICES === */
 @media (hover: none) and (pointer: coarse) {
-    /* Aumentar área de toque */
     .btn,
     .nav-link,
     a {
         min-height: 44px;
         min-width: 44px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    /* Eliminar hover en dispositivos táctiles */
-    .btn:hover,
-    .nav-link:hover,
-    .table tbody tr:hover {
-        transform: none;
     }
 }
 
@@ -370,11 +245,6 @@ html {
         padding: 0;
         max-width: 100%;
     }
-    
-    .card {
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
 }
 
 /* === ACCESIBILIDAD === */
@@ -388,293 +258,13 @@ html {
     }
 }
 
-@media (prefers-contrast: high) {
-    :root {
-        --dark-text-primary: #ffffff;
-        --dark-bg-primary: #000000;
-    }
-}
-
-/* === UTILIDADES RESPONSIVE === */
-.grid-responsive {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-}
-
-@media (max-width: 768px) {
-    .grid-responsive {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* === SCROLL SUAVE === */
+/* === UTILIDADES === */
 html {
     scroll-behavior: smooth;
 }
 
-/* === OPTIMIZACIÓN DE IMÁGENES === */
 img {
     max-width: 100%;
     height: auto;
     display: block;
-}
-
-/* === TABLAS RESPONSIVE === */
-@media (max-width: 768px) {
-    .table-responsive-mobile {
-        display: block;
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    .table-responsive-mobile table {
-        min-width: 600px;
-    }
-}
-
-/* === CARDS RESPONSIVE === */
-.card-responsive {
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-@media (min-width: 768px) {
-    .card-responsive {
-        width: calc(50% - 10px);
-    }
-}
-
-@media (min-width: 1200px) {
-    .card-responsive {
-        width: calc(33.333% - 14px);
-    }
-}
-
-
-/* === FIXES ESPECÍFICOS PARA MÓVILES === */
-
-/* Reportes - Tabla responsive */
-@media (max-width: 768px) {
-    #reportesSection .table-responsive {
-        display: block;
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    #reportesSection table {
-        min-width: 700px;
-        font-size: 0.85rem;
-    }
-    
-    #reportesSection .card {
-        overflow: visible;
-    }
-    
-    /* Vista previa de reportes */
-    #reportPreview {
-        max-width: 100%;
-        overflow-x: auto;
-    }
-    
-    #reportPreview table {
-        min-width: 600px;
-    }
-}
-
-/* Gastos - Botones visibles en móvil */
-@media (max-width: 768px) {
-    #gastosSection .mobile-expense-card .btn-group {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 6px !important;
-        margin-top: 10px;
-    }
-    
-    #gastosSection .mobile-expense-card .btn {
-        flex: 1 1 calc(33.333% - 4px) !important;
-        min-width: 0 !important;
-        padding: 8px 4px !important;
-        font-size: 0.75rem !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-    
-    #gastosSection .mobile-expense-card .btn i {
-        margin-right: 4px !important;
-        font-size: 0.9rem !important;
-    }
-    
-    /* Asegurar que el botón de eliminar sea visible */
-    #gastosSection .mobile-expense-card .btn-outline-danger,
-    #gastosSection .mobile-expense-card .btn-danger {
-        display: flex !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-}
-
-/* Vehículos - Botones visibles en móvil */
-@media (max-width: 768px) {
-    #vehiculosSection .mobile-expense-card .btn-group,
-    #vehiculosSection .mobile-vehicle-card .btn-group {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 6px !important;
-        margin-top: 10px;
-    }
-    
-    #vehiculosSection .mobile-expense-card .btn,
-    #vehiculosSection .mobile-vehicle-card .btn {
-        flex: 1 1 calc(33.333% - 4px) !important;
-        min-width: 0 !important;
-        padding: 8px 4px !important;
-        font-size: 0.75rem !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-    
-    /* Asegurar que los botones de editar y eliminar sean visibles */
-    #vehiculosSection .btn-outline-warning,
-    #vehiculosSection .btn-outline-danger {
-        display: flex !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-}
-
-/* Viajes - Mejorar visualización en móvil */
-@media (max-width: 768px) {
-    #viajesSection .trip-card,
-    #viajesSection .viaje-card {
-        margin-bottom: 15px;
-    }
-    
-    #viajesSection .btn-group {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 6px !important;
-    }
-    
-    #viajesSection .btn {
-        flex: 1 1 calc(50% - 3px) !important;
-        min-width: 0 !important;
-        font-size: 0.8rem !important;
-    }
-}
-
-/* Transportistas - Botones visibles */
-@media (max-width: 768px) {
-    #transportistasSection .mobile-expense-card .btn-group {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 6px !important;
-    }
-    
-    #transportistasSection .mobile-expense-card .btn {
-        flex: 1 1 calc(33.333% - 4px) !important;
-        min-width: 0 !important;
-        padding: 8px 4px !important;
-        font-size: 0.75rem !important;
-    }
-}
-
-/* Fix para overlay negro al cambiar de pestaña */
-.sidebar-overlay {
-    pointer-events: auto !important;
-    cursor: pointer;
-}
-
-.sidebar-overlay.show {
-    display: block !important;
-    opacity: 1 !important;
-}
-
-/* Asegurar que el contenido principal no se oculte */
-.main-content {
-    position: relative;
-    z-index: 1;
-    background: var(--light, #f8fafc);
-    min-height: 100vh;
-}
-
-/* Fix para modales en móvil */
-@media (max-width: 768px) {
-    .modal-dialog {
-        max-width: 95%;
-        margin: 10px auto;
-    }
-    
-    .modal-body {
-        max-height: 70vh;
-        overflow-y: auto;
-    }
-    
-    .modal-footer .btn {
-        flex: 1;
-        margin: 0 5px;
-    }
-}
-
-/* Asegurar que todos los botones sean visibles en móvil */
-@media (max-width: 768px) {
-    .btn-outline-primary,
-    .btn-outline-warning,
-    .btn-outline-danger,
-    .btn-outline-info,
-    .btn-outline-success {
-        display: inline-flex !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-    
-    /* Override de estilos que ocultan botones */
-    .d-none,
-    .d-md-none,
-    .d-lg-none {
-        display: inline-flex !important;
-    }
-}
-
-/* Fix específico para botones en cards móviles */
-@media (max-width: 768px) {
-    .mobile-expense-card .d-flex.gap-2,
-    .mobile-vehicle-card .d-flex.gap-2 {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 6px !important;
-    }
-    
-    .mobile-expense-card .d-flex.gap-2 .btn,
-    .mobile-vehicle-card .d-flex.gap-2 .btn {
-        flex: 1 1 calc(33.333% - 4px) !important;
-        min-width: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 8px 6px !important;
-        font-size: 0.75rem !important;
-    }
-    
-    .mobile-expense-card .d-flex.gap-2 .btn i,
-    .mobile-vehicle-card .d-flex.gap-2 .btn i {
-        margin-right: 4px !important;
-    }
-}
-
-/* Asegurar visibilidad de iconos */
-@media (max-width: 768px) {
-    .fa-eye,
-    .fa-edit,
-    .fa-trash,
-    .fa-check,
-    .fa-times {
-        display: inline-block !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
 }

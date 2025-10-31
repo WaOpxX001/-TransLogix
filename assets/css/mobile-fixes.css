@@ -1,0 +1,223 @@
+/* 📱 FIXES SIMPLES PARA MÓVIL */
+/* Este archivo solo arregla los botones y tablas en móvil */
+
+@media (max-width: 768px) {
+    /* ========================================
+       BOTONES VISIBLES EN TODAS LAS SECCIONES
+       ======================================== */
+    
+    /* Forzar que TODOS los botones sean visibles */
+    .btn,
+    .btn-outline-primary,
+    .btn-outline-warning,
+    .btn-outline-danger,
+    .btn-outline-info,
+    .btn-outline-success,
+    .btn-primary,
+    .btn-warning,
+    .btn-danger,
+    .btn-info,
+    .btn-success {
+        display: inline-flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    /* Grupos de botones en grid de 3 columnas */
+    .btn-group,
+    .d-flex.gap-2 {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        width: 100% !important;
+    }
+    
+    .btn-group .btn,
+    .d-flex.gap-2 .btn {
+        flex: 1 1 calc(33.333% - 4px) !important;
+        min-width: 0 !important;
+        padding: 8px 6px !important;
+        font-size: 0.75rem !important;
+    }
+    
+    /* Iconos visibles */
+    .fa,
+    .fas,
+    .far,
+    .fa-eye,
+    .fa-edit,
+    .fa-trash,
+    .fa-check,
+    .fa-times {
+        display: inline-block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        margin-right: 4px !important;
+    }
+    
+    /* ========================================
+       GASTOS - Botones visibles
+       ======================================== */
+    
+    #gastosSection .mobile-expense-card {
+        margin-bottom: 15px;
+        padding: 15px;
+    }
+    
+    #gastosSection .mobile-expense-card .btn-group,
+    #gastosSection .mobile-expense-card .d-flex.gap-2 {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        margin-top: 10px;
+    }
+    
+    #gastosSection .mobile-expense-card .btn {
+        flex: 1 1 calc(33.333% - 4px) !important;
+        min-width: 0 !important;
+        padding: 8px 6px !important;
+        font-size: 0.75rem !important;
+        display: flex !important;
+    }
+    
+    /* Asegurar que el botón ELIMINAR sea visible */
+    #gastosSection .btn-outline-danger,
+    #gastosSection .btn-danger {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* ========================================
+       VEHÍCULOS - Botones visibles
+       ======================================== */
+    
+    #vehiculosSection .mobile-expense-card,
+    #vehiculosSection .mobile-vehicle-card {
+        margin-bottom: 15px;
+        padding: 15px;
+    }
+    
+    #vehiculosSection .mobile-expense-card .btn-group,
+    #vehiculosSection .mobile-expense-card .d-flex.gap-2,
+    #vehiculosSection .mobile-vehicle-card .btn-group,
+    #vehiculosSection .mobile-vehicle-card .d-flex.gap-2 {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        margin-top: 10px;
+    }
+    
+    #vehiculosSection .mobile-expense-card .btn,
+    #vehiculosSection .mobile-vehicle-card .btn {
+        flex: 1 1 calc(33.333% - 4px) !important;
+        min-width: 0 !important;
+        padding: 8px 6px !important;
+        font-size: 0.75rem !important;
+        display: flex !important;
+    }
+    
+    /* Asegurar que los botones EDITAR y ELIMINAR sean visibles */
+    #vehiculosSection .btn-outline-warning,
+    #vehiculosSection .btn-outline-danger {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* ========================================
+       REPORTES - Tabla con scroll
+       ======================================== */
+    
+    #reportesSection .table-responsive {
+        display: block !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    #reportesSection table {
+        min-width: 700px !important;
+        font-size: 0.85rem !important;
+    }
+    
+    #reportesSection .card {
+        overflow: visible !important;
+    }
+    
+    /* Vista previa de reportes */
+    #reportPreview {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+    
+    #reportPreview table {
+        min-width: 600px;
+    }
+    
+    /* ========================================
+       VIAJES - Botones visibles
+       ======================================== */
+    
+    #viajesSection .trip-card,
+    #viajesSection .viaje-card {
+        margin-bottom: 15px;
+    }
+    
+    #viajesSection .btn-group,
+    #viajesSection .d-flex.gap-2 {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+    
+    #viajesSection .btn {
+        flex: 1 1 calc(50% - 3px) !important;
+        min-width: 0 !important;
+        font-size: 0.8rem !important;
+    }
+    
+    /* ========================================
+       TRANSPORTISTAS - Botones visibles
+       ======================================== */
+    
+    #transportistasSection .mobile-expense-card {
+        margin-bottom: 15px;
+        padding: 15px;
+    }
+    
+    #transportistasSection .mobile-expense-card .btn-group,
+    #transportistasSection .mobile-expense-card .d-flex.gap-2 {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+    
+    #transportistasSection .mobile-expense-card .btn {
+        flex: 1 1 calc(33.333% - 4px) !important;
+        min-width: 0 !important;
+        padding: 8px 6px !important;
+        font-size: 0.75rem !important;
+    }
+    
+    /* ========================================
+       MODALES EN MÓVIL
+       ======================================== */
+    
+    .modal-dialog {
+        max-width: 95% !important;
+        margin: 10px auto !important;
+    }
+    
+    .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+    
+    .modal-footer .btn {
+        flex: 1;
+        margin: 0 5px;
+    }
+}

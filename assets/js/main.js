@@ -1307,91 +1307,28 @@ window.switchToTransportista = function() {
 
 
 // ========================================
-// FUNCIONES PARA SIDEBAR MÓVIL
+// FUNCIONES SIMPLES PARA SIDEBAR MÓVIL
 // ========================================
 
-// Toggle sidebar en móvil
+// Toggle sidebar - VERSIÓN SIMPLE
 window.toggleSidebar = function() {
     const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    
-    if (!sidebar) {
-        console.error('Sidebar no encontrado');
-        return;
-    }
-    
-    // Crear overlay si no existe
-    if (!overlay) {
-        const newOverlay = document.createElement('div');
-        newOverlay.id = 'sidebarOverlay';
-        newOverlay.className = 'sidebar-overlay';
-        newOverlay.onclick = closeSidebar;
-        document.body.appendChild(newOverlay);
-    }
-    
-    // Toggle clases
-    sidebar.classList.toggle('show');
-    const currentOverlay = document.getElementById('sidebarOverlay');
-    if (currentOverlay) {
-        currentOverlay.classList.toggle('show');
-    }
-    
-    // Prevenir scroll del body cuando el sidebar está abierto
-    if (sidebar.classList.contains('show')) {
-        document.body.style.overflow = 'hidden';
-    } else {
-        document.body.style.overflow = '';
-    }
-};
-
-// Cerrar sidebar
-window.closeSidebar = function() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    
     if (sidebar) {
-        sidebar.classList.remove('show');
+        sidebar.classList.toggle('show');
     }
-    
-    if (overlay) {
-        overlay.classList.remove('show');
-    }
-    
-    document.body.style.overflow = '';
 };
 
-// Cerrar sidebar al hacer clic en un enlace de navegación
+// Cerrar sidebar al hacer clic en navegación
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.sidebar .nav-link');
-    
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
-            // En móvil, cerrar el sidebar después de hacer clic
             if (window.innerWidth < 768) {
-                setTimeout(() => {
-                    closeSidebar();
-                }, 300);
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) {
+                    sidebar.classList.remove('show');
+                }
             }
         });
     });
-    
-    // Cerrar sidebar al cambiar el tamaño de la ventana
-    window.addEventListener('resize', function() {
-        if (window.innerWidth >= 768) {
-            closeSidebar();
-        }
-    });
 });
-
-// Prevenir que el overlay negro se quede al cambiar de sección
-if (window.app) {
-    const originalNavigateTo = window.app.navigateTo.bind(window.app);
-    window.app.navigateTo = function(sectionId, title) {
-        // Cerrar sidebar en móvil
-        if (window.innerWidth < 768) {
-            closeSidebar();
-        }
-        // Llamar a la función original
-        return originalNavigateTo(sectionId, title);
-    };
-}
