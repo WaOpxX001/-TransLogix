@@ -1,83 +1,57 @@
-/* 📱 Responsive Ultra - Soporte para todas las resoluciones */
-/* Móviles, Tablets, HD, Full HD, 2K, 4K, 8K */
+/* 📱 Responsive Ultra - VERSIÓN ULTRA SIMPLE */
 
-/* === VARIABLES RESPONSIVE === */
-:root {
-    --container-max-width: none;
-    --sidebar-width: 250px;
-    --header-height: 60px;
-    --card-gap: 20px;
-}
-
-/* === BASE RESPONSIVE === */
-html {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-/* === MÓVILES (320px - 768px) === */
+/* === MÓVILES (< 768px) === */
 @media (max-width: 768px) {
-    /* Ocultar sidebar overlay que causa pantalla negra */
+    /* NO OVERLAY - Sin pantalla negra */
     .sidebar-overlay {
         display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
     }
     
     /* Main content sin margen */
     .main-content {
         margin-left: 0 !important;
-        padding: 15px;
+        padding: 15px !important;
     }
     
-    /* Sidebar oculto por defecto en móvil */
+    /* Sidebar oculto por defecto */
     .sidebar {
-        position: fixed;
-        left: -100%;
-        width: 280px;
-        max-width: 85vw;
-        top: 0;
-        bottom: 0;
-        z-index: 9999;
-        transition: left 0.3s ease;
+        position: fixed !important;
+        left: -100% !important;
+        width: 280px !important;
+        max-width: 85vw !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        z-index: 9999 !important;
+        transition: left 0.3s ease !important;
     }
     
     .sidebar.show {
-        left: 0;
+        left: 0 !important;
     }
     
-    /* Botón de menú móvil */
+    /* Botón de menú */
     .mobile-toggle {
         display: block !important;
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        z-index: 9998;
-        background: #6366f1;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        position: fixed !important;
+        top: 10px !important;
+        left: 10px !important;
+        z-index: 9998 !important;
+        background: #6366f1 !important;
+        color: white !important;
+        border: none !important;
+        padding: 10px 15px !important;
+        border-radius: 8px !important;
     }
     
-    /* BOTONES VISIBLES EN MÓVIL */
-    .btn-group {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 6px !important;
-        width: 100%;
-    }
+    /* ========================================
+       BOTONES VISIBLES - FORZADO
+       ======================================== */
     
-    .btn-group .btn {
-        flex: 1 1 calc(33.333% - 4px) !important;
-        min-width: 0 !important;
-        padding: 8px 6px !important;
-        font-size: 0.75rem !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-    
-    /* Asegurar que TODOS los botones sean visibles */
+    /* Forzar que TODOS los botones sean visibles */
+    .btn,
+    .btn-sm,
     .btn-outline-primary,
     .btn-outline-warning,
     .btn-outline-danger,
@@ -88,104 +62,196 @@ html {
     .btn-danger,
     .btn-info,
     .btn-success {
-        display: flex !important;
+        display: inline-flex !important;
         opacity: 1 !important;
         visibility: visible !important;
     }
     
-    /* Iconos visibles */
-    .fa-eye,
-    .fa-edit,
-    .fa-trash,
-    .fa-check,
-    .fa-times,
-    .fas,
-    .far {
-        display: inline-block !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-    
-    /* Cards móviles */
-    .mobile-expense-card,
-    .mobile-vehicle-card {
-        margin-bottom: 15px;
-        padding: 15px;
-    }
-    
-    .mobile-expense-card .d-flex.gap-2,
-    .mobile-vehicle-card .d-flex.gap-2 {
+    /* Grupos de botones en grid */
+    .btn-group,
+    .d-flex.gap-2,
+    .d-flex.gap-1 {
         display: flex !important;
         flex-wrap: wrap !important;
         gap: 6px !important;
+        width: 100% !important;
     }
     
-    .mobile-expense-card .btn,
-    .mobile-vehicle-card .btn {
+    .btn-group .btn,
+    .d-flex.gap-2 .btn,
+    .d-flex.gap-1 .btn {
         flex: 1 1 calc(33.333% - 4px) !important;
         min-width: 0 !important;
         padding: 8px 6px !important;
         font-size: 0.75rem !important;
     }
     
-    /* REPORTES - Tabla con scroll */
-    #reportesSection .table-responsive {
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch;
+    /* Iconos visibles */
+    .fa,
+    .fas,
+    .far,
+    .fa-eye,
+    .fa-edit,
+    .fa-trash,
+    .fa-check,
+    .fa-times,
+    .fa-download,
+    .fa-file-pdf {
+        display: inline-block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
     
-    #reportesSection table {
-        min-width: 700px;
-        font-size: 0.85rem;
+    /* ========================================
+       GASTOS - Botones visibles
+       ======================================== */
+    
+    #gastosSection .mobile-expense-card {
+        margin-bottom: 15px !important;
+        padding: 15px !important;
     }
     
-    /* GASTOS - Botones visibles */
-    #gastosSection .mobile-expense-card .btn-group {
+    #gastosSection .mobile-expense-card .btn-group,
+    #gastosSection .mobile-expense-card .d-flex {
         display: flex !important;
         flex-wrap: wrap !important;
         gap: 6px !important;
     }
     
+    #gastosSection .mobile-expense-card .btn {
+        flex: 1 1 calc(33.333% - 4px) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
     #gastosSection .btn-outline-danger,
     #gastosSection .btn-danger {
         display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
     
-    /* VEHÍCULOS - Botones visibles */
-    #vehiculosSection .btn-outline-warning,
-    #vehiculosSection .btn-outline-danger {
+    /* ========================================
+       VEHÍCULOS - Botones visibles
+       ======================================== */
+    
+    #vehiculosSection .mobile-expense-card,
+    #vehiculosSection .mobile-vehicle-card {
+        margin-bottom: 15px !important;
+        padding: 15px !important;
+    }
+    
+    #vehiculosSection .mobile-expense-card .btn-group,
+    #vehiculosSection .mobile-expense-card .d-flex,
+    #vehiculosSection .mobile-vehicle-card .btn-group,
+    #vehiculosSection .mobile-vehicle-card .d-flex {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+    
+    #vehiculosSection .mobile-expense-card .btn,
+    #vehiculosSection .mobile-vehicle-card .btn {
+        flex: 1 1 calc(33.333% - 4px) !important;
         display: flex !important;
     }
     
-    /* Modales en móvil */
+    #vehiculosSection .btn-outline-warning,
+    #vehiculosSection .btn-outline-danger {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* ========================================
+       REPORTES - Tabla con scroll
+       ======================================== */
+    
+    #reportesSection .table-responsive {
+        display: block !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    #reportesSection table {
+        min-width: 700px !important;
+        font-size: 0.85rem !important;
+    }
+    
+    #reportesSection .card {
+        overflow: visible !important;
+    }
+    
+    #reportPreview {
+        max-width: 100% !important;
+        overflow-x: auto !important;
+    }
+    
+    #reportPreview table {
+        min-width: 600px !important;
+    }
+    
+    /* ========================================
+       VIAJES - Botones visibles
+       ======================================== */
+    
+    #viajesSection .trip-card,
+    #viajesSection .viaje-card {
+        margin-bottom: 15px !important;
+    }
+    
+    #viajesSection .btn-group,
+    #viajesSection .d-flex {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+    
+    #viajesSection .btn {
+        flex: 1 1 calc(50% - 3px) !important;
+    }
+    
+    /* ========================================
+       TRANSPORTISTAS - Botones visibles
+       ======================================== */
+    
+    #transportistasSection .mobile-expense-card {
+        margin-bottom: 15px !important;
+        padding: 15px !important;
+    }
+    
+    #transportistasSection .mobile-expense-card .btn-group,
+    #transportistasSection .mobile-expense-card .d-flex {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+    
+    #transportistasSection .mobile-expense-card .btn {
+        flex: 1 1 calc(33.333% - 4px) !important;
+    }
+    
+    /* ========================================
+       MODALES
+       ======================================== */
+    
     .modal-dialog {
-        max-width: 95%;
-        margin: 10px auto;
+        max-width: 95% !important;
+        margin: 10px auto !important;
     }
     
     .modal-body {
-        max-height: 70vh;
-        overflow-y: auto;
+        max-height: 70vh !important;
+        overflow-y: auto !important;
     }
 }
 
 /* === TABLETS (768px - 1024px) === */
 @media (min-width: 768px) and (max-width: 1024px) {
-    html {
-        font-size: 15px;
-    }
-    
-    :root {
-        --sidebar-width: 220px;
-        --card-gap: 18px;
-    }
-    
     .main-content {
-        padding: 18px;
-    }
-    
-    .sidebar {
-        width: var(--sidebar-width);
+        padding: 18px !important;
     }
 }
 
@@ -194,77 +260,4 @@ html {
     .mobile-toggle {
         display: none !important;
     }
-    
-    .sidebar-overlay {
-        display: none !important;
-    }
-}
-
-/* === ORIENTACIÓN === */
-@media (orientation: landscape) {
-    .landscape-only {
-        display: block !important;
-    }
-    
-    .portrait-only {
-        display: none !important;
-    }
-}
-
-@media (orientation: portrait) {
-    .landscape-only {
-        display: none !important;
-    }
-    
-    .portrait-only {
-        display: block !important;
-    }
-}
-
-/* === TOUCH DEVICES === */
-@media (hover: none) and (pointer: coarse) {
-    .btn,
-    .nav-link,
-    a {
-        min-height: 44px;
-        min-width: 44px;
-    }
-}
-
-/* === PRINT === */
-@media print {
-    .sidebar,
-    .header,
-    .btn,
-    .no-print {
-        display: none !important;
-    }
-    
-    .main-content {
-        margin: 0;
-        padding: 0;
-        max-width: 100%;
-    }
-}
-
-/* === ACCESIBILIDAD === */
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-/* === UTILIDADES === */
-html {
-    scroll-behavior: smooth;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
 }

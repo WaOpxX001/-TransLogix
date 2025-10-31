@@ -1307,10 +1307,10 @@ window.switchToTransportista = function() {
 
 
 // ========================================
-// FUNCIONES SIMPLES PARA SIDEBAR MÓVIL
+// SIDEBAR MÓVIL - ULTRA SIMPLE
 // ========================================
 
-// Toggle sidebar - VERSIÓN SIMPLE
+// Toggle sidebar - SIN OVERLAY
 window.toggleSidebar = function() {
     const sidebar = document.getElementById('sidebar');
     if (sidebar) {
@@ -1318,16 +1318,18 @@ window.toggleSidebar = function() {
     }
 };
 
-// Cerrar sidebar al hacer clic en navegación
+// Cerrar sidebar automáticamente al navegar
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.sidebar .nav-link');
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
             if (window.innerWidth < 768) {
-                const sidebar = document.getElementById('sidebar');
-                if (sidebar) {
-                    sidebar.classList.remove('show');
-                }
+                setTimeout(() => {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) {
+                        sidebar.classList.remove('show');
+                    }
+                }, 100);
             }
         });
     });
