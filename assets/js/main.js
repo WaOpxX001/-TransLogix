@@ -1310,7 +1310,7 @@ window.switchToTransportista = function() {
 // SIDEBAR MÓVIL - ULTRA SIMPLE
 // ========================================
 
-// Toggle sidebar - SIN OVERLAY
+// Toggle sidebar
 window.toggleSidebar = function() {
     const sidebar = document.getElementById('sidebar');
     if (sidebar) {
@@ -1318,19 +1318,38 @@ window.toggleSidebar = function() {
     }
 };
 
-// Cerrar sidebar automáticamente al navegar
+// Cerrar sidebar
+window.closeSidebar = function() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+        sidebar.classList.remove('show');
+    }
+};
+
+// Cerrar sidebar al navegar o hacer clic fuera
 document.addEventListener('DOMContentLoaded', function() {
+    // Cerrar al hacer clic en un enlace de navegación
     const navLinks = document.querySelectorAll('.sidebar .nav-link');
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
             if (window.innerWidth < 768) {
-                setTimeout(() => {
-                    const sidebar = document.getElementById('sidebar');
-                    if (sidebar) {
-                        sidebar.classList.remove('show');
-                    }
-                }, 100);
+                setTimeout(() => closeSidebar(), 100);
             }
         });
+    });
+    
+    // Cerrar al hacer clic fuera del sidebar
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth < 768) {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.querySelector('.mobile-toggle');
+            
+            if (sidebar && sidebar.classList.contains('show')) {
+                // Si el clic no fue en el sidebar ni en el botón de toggle
+                if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+                    closeSidebar();
+                }
+            }
+        }
     });
 });
