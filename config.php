@@ -1,13 +1,13 @@
 <?php
 // Database Configuration - Usa variables de entorno en Railway
-define('DB_HOST', getenv('MYSQLHOST') ?: getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'transporte_pro');
-define('DB_USER', getenv('MYSQLUSER') ?: getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('MYSQLPASSWORD') ?: getenv('DB_PASS') ?: '');
-define('DB_PORT', getenv('MYSQLPORT') ?: getenv('DB_PORT') ?: '3306');
+define('DB_HOST', $_ENV['MYSQLHOST'] ?? $_SERVER['MYSQLHOST'] ?? getenv('MYSQLHOST') ?: 'localhost');
+define('DB_NAME', $_ENV['MYSQLDATABASE'] ?? $_SERVER['MYSQLDATABASE'] ?? getenv('MYSQLDATABASE') ?: 'railway');
+define('DB_USER', $_ENV['MYSQLUSER'] ?? $_SERVER['MYSQLUSER'] ?? getenv('MYSQLUSER') ?: 'root');
+define('DB_PASS', $_ENV['MYSQLPASSWORD'] ?? $_SERVER['MYSQLPASSWORD'] ?? getenv('MYSQLPASSWORD') ?: '');
+define('DB_PORT', $_ENV['MYSQLPORT'] ?? $_SERVER['MYSQLPORT'] ?? getenv('MYSQLPORT') ?: '3306');
 
 // Security Configuration
-define('JWT_SECRET', getenv('JWT_SECRET') ?: 'your_jwt_secret_key_here_change_in_production');
+define('JWT_SECRET', $_ENV['JWT_SECRET'] ?? $_SERVER['JWT_SECRET'] ?? getenv('JWT_SECRET') ?: 'your_jwt_secret_key_here_change_in_production');
 define('UPLOAD_DIR', 'uploads/recibos/');
 define('MAX_FILE_SIZE', 5 * 1024 * 1024); // 5MB
 define('ALLOWED_EXTENSIONS', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
