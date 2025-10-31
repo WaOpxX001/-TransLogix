@@ -134,8 +134,8 @@ document.addEventListener('scroll', optimizedScroll, { passive: true });
 // Preload crítico de recursos
 function preloadCriticalResources() {
     const criticalUrls = [
-        '/LogisticaFinal/api/dashboard/data.php',
-        '/LogisticaFinal/api/auth/check.php'
+        '/api/dashboard/data.php',
+        '/api/auth/check.php'
     ];
     
     criticalUrls.forEach(url => {

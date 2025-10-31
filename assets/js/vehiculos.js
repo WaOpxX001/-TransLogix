@@ -24,8 +24,8 @@ class VehiculosManager {
         try {
             // Real API calls - connecting to database
             const [vehiclesResponse, statsResponse] = await Promise.all([
-                window.app.apiCall('/LogisticaFinal/api/vehiculos/list.php'),
-                window.app.apiCall('/LogisticaFinal/api/vehiculos/stats.php')
+                window.app.apiCall('/api/vehiculos/list.php'),
+                window.app.apiCall('/api/vehiculos/stats.php')
             ]);
             
             this.vehicles = vehiclesResponse;
@@ -380,7 +380,7 @@ class VehiculosManager {
             window.app.showToast('Guardando vehículo...', 'info');
             
             // Real API call to save in database
-            const response = await window.app.apiCall('/LogisticaFinal/api/vehiculos/create.php', {
+            const response = await window.app.apiCall('/api/vehiculos/create.php', {
                 method: 'POST',
                 body: JSON.stringify(vehicleData)
             });
@@ -472,7 +472,7 @@ class VehiculosManager {
             window.app.showToast('Actualizando vehículo...', 'info');
             
             // Real API call to update in database
-            const response = await window.app.apiCall('/LogisticaFinal/api/vehiculos/update.php', {
+            const response = await window.app.apiCall('/api/vehiculos/update.php', {
                 method: 'PUT',
                 body: JSON.stringify(vehicleData)
             });
@@ -503,7 +503,7 @@ class VehiculosManager {
             'danger',
             async () => {
                 try {
-                    await window.app.apiCall('/LogisticaFinal/api/vehiculos/delete.php', {
+                    await window.app.apiCall('/api/vehiculos/delete.php', {
                         method: 'DELETE',
                         body: JSON.stringify({ id })
                     });
@@ -724,7 +724,7 @@ VehiculosManager.saveVehicleChanges = async function(id, form) {
     try {
         window.app.showToast('Actualizando vehículo...', 'info');
         
-        const response = await window.app.apiCall('/LogisticaFinal/api/vehiculos/update.php', {
+        const response = await window.app.apiCall('/api/vehiculos/update.php', {
             method: 'PUT',
             body: JSON.stringify(vehicleData)
         });
@@ -824,7 +824,7 @@ VehiculosManager.confirmDeleteVehicle = async function(id) {
     try {
         window.app.showToast('Eliminando vehículo...', 'info');
         
-        const response = await window.app.apiCall('/LogisticaFinal/api/vehiculos/delete.php', {
+        const response = await window.app.apiCall('/api/vehiculos/delete.php', {
             method: 'POST',
             body: JSON.stringify({ id: id })
         });

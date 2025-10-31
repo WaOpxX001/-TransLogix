@@ -821,7 +821,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
         // Fallback: obtener información del servidor
         async obtenerInfoUsuarioDelServidor() {
             try {
-                const response = await fetch('/LogisticaFinal/test_session.php');
+                const response = await fetch('/test_session.php');
                 const data = await response.json();
 
                 this.userRole = (data.effective_role || '').toString().trim().toLowerCase();
@@ -1309,8 +1309,8 @@ if (typeof ViajesManagerSimple === 'undefined') {
         // Cargar transportistas
         async cargarTransportistas() {
             try {
-                console.log('📡 Haciendo petición a /LogisticaFinal/api/transportistas/list.php');
-                const response = await fetch('/LogisticaFinal/api/transportistas/list.php');
+                console.log('📡 Haciendo petición a /api/transportistas/list.php');
+                const response = await fetch('/api/transportistas/list.php');
 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -1397,8 +1397,8 @@ if (typeof ViajesManagerSimple === 'undefined') {
         // Cargar vehículos
         async cargarVehiculos() {
             try {
-                console.log('📡 Haciendo petición a /LogisticaFinal/api/vehiculos/list.php');
-                const response = await fetch('/LogisticaFinal/api/vehiculos/list.php');
+                console.log('📡 Haciendo petición a /api/vehiculos/list.php');
+                const response = await fetch('/api/vehiculos/list.php');
 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -1466,7 +1466,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
         // Cargar viajes
         async cargarViajes() {
             try {
-                console.log('📡 Haciendo petición a /LogisticaFinal/api/viajes/list.php');
+                console.log('📡 Haciendo petición a /api/viajes/list.php');
 
                 // IMPORTANTE: Obtener información del usuario ANTES de cargar viajes
                 this.obtenerInfoUsuario();
@@ -1476,7 +1476,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos máximo
 
-                const response = await fetch('/LogisticaFinal/api/viajes/list.php', {
+                const response = await fetch('/api/viajes/list.php', {
                     signal: controller.signal
                 });
                 clearTimeout(timeoutId);
@@ -2658,7 +2658,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
                 }
 
                 // Enviar a la API
-                const response = await fetch('/LogisticaFinal/api/viajes/update.php', {
+                const response = await fetch('/api/viajes/update.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -2722,7 +2722,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
                 // Obtener el ID del transportista actual
                 const transportistaId = this.getCurrentUserId();
 
-                const response = await fetch('/LogisticaFinal/api/viajes/solicitar_inicio.php', {
+                const response = await fetch('/api/viajes/solicitar_inicio.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -2887,7 +2887,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
             console.log('✅ Aprobando solicitud de viaje:', id);
 
             try {
-                const response = await fetch('/LogisticaFinal/api/viajes/aprobar_inicio.php', {
+                const response = await fetch('/api/viajes/aprobar_inicio.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -3183,7 +3183,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
                 console.log('   Motivo:', resultado.motivo.trim());
                 console.log('   Días bloqueo:', resultado.diasBloqueo);
                 
-                const response = await fetch('/LogisticaFinal/api/viajes/rechazar_inicio.php', {
+                const response = await fetch('/api/viajes/rechazar_inicio.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -3265,7 +3265,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
             try {
                 console.log('📡 Enviando solicitud de finalización a la API...');
                 
-                const response = await fetch('/LogisticaFinal/api/viajes/solicitar_finalizacion.php', {
+                const response = await fetch('/api/viajes/solicitar_finalizacion.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -3388,7 +3388,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
             console.log('✅ Aprobando finalización de viaje:', id);
 
             try {
-                const response = await fetch('/LogisticaFinal/api/viajes/aprobar_finalizacion.php', {
+                const response = await fetch('/api/viajes/aprobar_finalizacion.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -3464,7 +3464,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
                 console.log('   Viaje ID:', id);
                 console.log('   Motivo:', motivo.trim());
                 
-                const response = await fetch('/LogisticaFinal/api/viajes/rechazar_finalizacion.php', {
+                const response = await fetch('/api/viajes/rechazar_finalizacion.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -3619,7 +3619,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
         // Verificar si un viaje tiene solicitud pendiente (desde API)
         async tieneSolicitudPendiente(id) {
             try {
-                const response = await fetch(`/LogisticaFinal/api/viajes/verificar_solicitud.php?viaje_id=${id}`);
+                const response = await fetch(`/api/viajes/verificar_solicitud.php?viaje_id=${id}`);
                 const result = await response.json();
 
                 if (result.success) {
@@ -3646,7 +3646,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
                             console.log(`📡 Verificando viaje ${viaje.id}...`);
                             // Incluir user_id en la petición para verificar bloqueos
                             const userId = this.getCurrentUserId();
-                            const url = `/LogisticaFinal/api/viajes/verificar_solicitud.php?viaje_id=${viaje.id}${userId ? `&user_id=${userId}` : ''}`;
+                            const url = `/api/viajes/verificar_solicitud.php?viaje_id=${viaje.id}${userId ? `&user_id=${userId}` : ''}`;
                             const response = await fetch(url);
                             const data = await response.json();
                             
@@ -3707,7 +3707,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
                     if (viaje.estado === 'en_ruta') {
                         try {
                             console.log(`📡 Verificando finalización viaje ${viaje.id}...`);
-                            const response = await fetch(`/LogisticaFinal/api/viajes/verificar_solicitud_finalizacion.php?viaje_id=${viaje.id}`);
+                            const response = await fetch(`/api/viajes/verificar_solicitud_finalizacion.php?viaje_id=${viaje.id}`);
                             const data = await response.json();
                             
                             console.log(`📥 Respuesta finalización para viaje ${viaje.id}:`, data);
@@ -3763,7 +3763,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
             try {
                 console.log('🗑️ Eliminando viaje:', id);
 
-                const response = await fetch('/LogisticaFinal/api/viajes/delete.php', {
+                const response = await fetch('/api/viajes/delete.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -3888,7 +3888,7 @@ if (typeof ViajesManagerSimple === 'undefined') {
 
                 // Enviar a la API
                 console.log('🚀 Enviando datos a API:', viajeData);
-                const response = await fetch('/LogisticaFinal/api/viajes/create.php', {
+                const response = await fetch('/api/viajes/create.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

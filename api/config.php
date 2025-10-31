@@ -1,14 +1,16 @@
 <?php
 // API Configuration - Simplified version without global headers
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'transporte_pro');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// Use environment variables for database connection (Railway, Heroku, etc.)
+define('DB_HOST', $_ENV['MYSQLHOST'] ?? $_SERVER['MYSQLHOST'] ?? getenv('MYSQLHOST') ?: 'localhost');
+define('DB_NAME', $_ENV['MYSQLDATABASE'] ?? $_SERVER['MYSQLDATABASE'] ?? getenv('MYSQLDATABASE') ?: 'transporte_pro');
+define('DB_USER', $_ENV['MYSQLUSER'] ?? $_SERVER['MYSQLUSER'] ?? getenv('MYSQLUSER') ?: 'root');
+define('DB_PASS', $_ENV['MYSQLPASSWORD'] ?? $_SERVER['MYSQLPASSWORD'] ?? getenv('MYSQLPASSWORD') ?: '');
+define('DB_PORT', $_ENV['MYSQLPORT'] ?? $_SERVER['MYSQLPORT'] ?? getenv('MYSQLPORT') ?: '3306');
 
 // Create PDO connection
 try {
     $pdo = new PDO(
-        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
+        "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4",
         DB_USER,
         DB_PASS,
         [
@@ -21,7 +23,7 @@ try {
     error_log("Database connection failed: " . $e->getMessage());
     http_response_code(500);
     header('Content-Type: application/json');
-    echo json_encode(['error' => 'Database connection failed']);
+    echo json_encode(['error' => 'Database connection failed', 'details' => $e->getMessage()]);
     exit();
 }
 

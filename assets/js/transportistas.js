@@ -23,7 +23,7 @@ class TransportistasManager {
     async loadData() {
         try {
             // Real API call to get drivers from database
-            const response = await window.app.apiCall('/LogisticaFinal/api/transportistas/list.php');
+            const response = await window.app.apiCall('/api/transportistas/list.php');
             this.drivers = response;
             this.updateDriversList();
             
@@ -497,7 +497,7 @@ class TransportistasManager {
             // Intentar envío alternativo como prueba
             console.log('🔄 Intentando método alternativo...');
             try {
-                const testResponse = await fetch('/LogisticaFinal/api/transportistas/create.php', {
+                const testResponse = await fetch('/api/transportistas/create.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -739,7 +739,7 @@ class TransportistasManager {
         try {
             window.app.showToast('Actualizando transportista...', 'info');
             
-            const response = await window.app.apiCall('/LogisticaFinal/api/transportistas/update.php', {
+            const response = await window.app.apiCall('/api/transportistas/update.php', {
                 method: 'POST',
                 body: JSON.stringify(driverData)
             });
@@ -773,7 +773,7 @@ class TransportistasManager {
                     console.log('🗑️ Eliminando transportista ID:', id);
                     console.log('📋 Datos a enviar:', { id });
                     
-                    const response = await window.app.apiCall('/LogisticaFinal/api/transportistas/delete.php', {
+                    const response = await window.app.apiCall('/api/transportistas/delete.php', {
                         method: 'POST',
                         body: JSON.stringify({ id: parseInt(id) })
                     });
@@ -1932,7 +1932,7 @@ TransportistasManager.confirmDeleteDriver = async function(id) {
         console.log('📋 Datos a enviar:', requestData);
         
         // El endpoint delete.php ahora hace eliminación permanente de la base de datos
-        const response = await window.app.apiCall('/LogisticaFinal/api/transportistas/delete.php', {
+        const response = await window.app.apiCall('/api/transportistas/delete.php', {
             method: 'POST',
             body: JSON.stringify(requestData)
         });

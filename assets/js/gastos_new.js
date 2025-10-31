@@ -56,7 +56,7 @@ class GastosManager {
 
             console.log('Loading ALL expenses - filtering will be done in frontend');
 
-            const response = await window.app.apiCall('/LogisticaFinal/api/gastos/list.php', {
+            const response = await window.app.apiCall('/api/gastos/list.php', {
                 method: 'POST',
                 body: JSON.stringify({})
             });
@@ -81,7 +81,7 @@ class GastosManager {
             
             // FORZAR recarga desde el servidor sin caché
             const timestamp = Date.now();
-            const response = await fetch('/LogisticaFinal/api/vehiculos/list.php?v=' + timestamp, {
+            const response = await fetch('/api/vehiculos/list.php?v=' + timestamp, {
                 method: 'GET',
                 cache: 'no-store',
                 headers: {
@@ -122,7 +122,7 @@ class GastosManager {
             
             // FORZAR recarga desde el servidor sin caché
             const timestamp = Date.now();
-            const response = await fetch('/LogisticaFinal/api/viajes/list.php?v=' + timestamp, {
+            const response = await fetch('/api/viajes/list.php?v=' + timestamp, {
                 method: 'GET',
                 cache: 'no-store',
                 headers: {
@@ -468,7 +468,7 @@ class GastosManager {
                 return;
             }
 
-            const response = await window.app.apiCall('/LogisticaFinal/api/gastos/create.php', {
+            const response = await window.app.apiCall('/api/gastos/create.php', {
                 method: 'POST',
                 body: JSON.stringify(expenseData)
             });
@@ -517,7 +517,7 @@ class GastosManager {
             }
 
             // Usar fetch directamente para subir archivos (no usar apiCall que puede modificar headers)
-            const response = await fetch('/LogisticaFinal/api/gastos/upload.php', {
+            const response = await fetch('/api/gastos/upload.php', {
                 method: 'POST',
                 body: formData,
                 credentials: 'include' // Incluir cookies de sesión
@@ -1237,7 +1237,7 @@ GastosManager.confirmDeleteExpense = function(id) {
 
 async function deleteExpense(id) {
     try {
-        const response = await window.app.apiCall('/LogisticaFinal/api/gastos/delete.php', {
+        const response = await window.app.apiCall('/api/gastos/delete.php', {
             method: 'POST',
             body: JSON.stringify({ id: id })
         });
@@ -1419,7 +1419,7 @@ GastosManager.confirmDenyExpense = function(id) {
 // Funciones auxiliares para las llamadas a la API
 async function approveExpenseAPI(id) {
     try {
-        const response = await window.app.apiCall('/LogisticaFinal/api/gastos/approve.php', {
+        const response = await window.app.apiCall('/api/gastos/approve.php', {
             method: 'POST',
             body: JSON.stringify({ id: id, action: 'approve' })
         });
@@ -1438,7 +1438,7 @@ async function approveExpenseAPI(id) {
 
 async function denyExpenseAPI(id, reason = '') {
     try {
-        const response = await window.app.apiCall('/LogisticaFinal/api/gastos/approve.php', {
+        const response = await window.app.apiCall('/api/gastos/approve.php', {
             method: 'POST',
             body: JSON.stringify({ id: id, action: 'deny', reason: reason })
         });
