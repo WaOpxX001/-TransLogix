@@ -1,12 +1,13 @@
 <?php
-// Database Configuration
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'transporte_pro');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// Database Configuration - Usa variables de entorno en Railway
+define('DB_HOST', getenv('MYSQLHOST') ?: getenv('DB_HOST') ?: 'localhost');
+define('DB_NAME', getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'transporte_pro');
+define('DB_USER', getenv('MYSQLUSER') ?: getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: getenv('DB_PASS') ?: '');
+define('DB_PORT', getenv('MYSQLPORT') ?: getenv('DB_PORT') ?: '3306');
 
 // Security Configuration
-define('JWT_SECRET', 'your_jwt_secret_key_here_change_in_production');
+define('JWT_SECRET', getenv('JWT_SECRET') ?: 'your_jwt_secret_key_here_change_in_production');
 define('UPLOAD_DIR', 'uploads/recibos/');
 define('MAX_FILE_SIZE', 5 * 1024 * 1024); // 5MB
 define('ALLOWED_EXTENSIONS', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
@@ -38,7 +39,7 @@ class Database {
     public function __construct() {
         try {
             $this->connection = new PDO(
-                "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
+                "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4",
                 DB_USER,
                 DB_PASS,
                 [
