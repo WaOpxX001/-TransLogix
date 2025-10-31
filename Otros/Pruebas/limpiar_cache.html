@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limpiar Caché - TransLogix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        .step {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+        }
+        .step h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .button {
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .button:hover {
+            background: #5568d3;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            display: none;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 Limpiar Caché del Navegador</h1>
+        
+        <div class="warning">
+            <strong>⚠️ Importante:</strong> Después de limpiar el caché, deberás volver a iniciar sesión en el sistema.
+        </div>
+
+        <div class="step">
+            <h3>Opción 1: Atajo de Teclado (Recomendado)</h3>
+            <p>Presiona las siguientes teclas al mismo tiempo:</p>
+            <ul>
+                <li><strong>Windows/Linux:</strong> <code>Ctrl + Shift + Delete</code></li>
+                <li><strong>Mac:</strong> <code>Cmd + Shift + Delete</code></li>
+            </ul>
+            <p>Luego selecciona:</p>
+            <ul>
+                <li>✅ Imágenes y archivos en caché</li>
+                <li>✅ Cookies y otros datos de sitios</li>
+                <li>Rango de tiempo: <strong>Todo</strong></li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Opción 2: Recarga Forzada</h3>
+            <p>Presiona las siguientes teclas en la página del sistema:</p>
+            <ul>
+                <li><strong>Windows/Linux:</strong> <code>Ctrl + F5</code> o <code>Ctrl + Shift + R</code></li>
+                <li><strong>Mac:</strong> <code>Cmd + Shift + R</code></li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Opción 3: Limpiar Automáticamente</h3>
+            <p>Haz clic en el botón para limpiar el caché automáticamente:</p>
+            <button class="button" onclick="limpiarCache()">🧹 Limpiar Caché Ahora</button>
+        </div>
+
+        <div class="success" id="successMessage">
+            ✅ Caché limpiado exitosamente. Redirigiendo al sistema...
+        </div>
+
+        <div class="step">
+            <h3>Después de Limpiar el Caché:</h3>
+            <ol>
+                <li>Cierra todas las pestañas del sistema TransLogix</li>
+                <li>Abre una nueva pestaña</li>
+                <li>Accede al sistema nuevamente</li>
+                <li>Inicia sesión con tus credenciales</li>
+            </ol>
+        </div>
+
+        <a href="index.html" class="button">← Volver al Sistema</a>
+    </div>
+
+    <script>
+        function limpiarCache() {
+            // Limpiar localStorage
+            localStorage.clear();
+            console.log('✅ localStorage limpiado');
+
+            // Limpiar sessionStorage
+            sessionStorage.clear();
+            console.log('✅ sessionStorage limpiado');
+
+            // Limpiar cookies
+            document.cookie.split(";").forEach(function(c) {
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+            console.log('✅ Cookies limpiadas');
+
+            // Mostrar mensaje de éxito
+            document.getElementById('successMessage').style.display = 'block';
+
+            // Redirigir después de 2 segundos
+            setTimeout(function() {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+
+        // Limpiar automáticamente al cargar la página si hay parámetro
+        if (window.location.search.includes('auto=true')) {
+            limpiarCache();
+        }
+    </script>
+</body>
+</html>

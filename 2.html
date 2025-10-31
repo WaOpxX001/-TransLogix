@@ -1,0 +1,546 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="max-age=100, must-revalidate" />
+<meta name="description" content="Instituto Mexicano del Seguro Social Portal DELTA" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> Gestión de asegurados</title>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="icon" href="/delta/resources/iconos/favicon.ico" />
+
+<!-- GobMx -->
+<link href="https://framework-gb.cdn.gob.mx/assets/styles/main.css" rel="stylesheet">
+
+<!-- Bootstrap -->
+<link type="text/css" href="/delta/resources/estilos/bootstrap/DT_bootstrap.css" rel="stylesheet" />
+
+<!-- Jquery-->
+<link type="text/css" href="/delta/resources/estilos/jquery/ui-lightness/jquery-ui.css" rel="stylesheet" />
+
+<!-- Fonts -->
+<link type="text/css" href="/delta/resources/estilos/font-awesome/css/font-awesome.css" rel="stylesheet" />
+
+
+<!-- IMSS -->
+<link type="text/css" href="/delta/resources/estilos/imss/portal.css" rel="stylesheet" />
+<!-- estilo para que los cuadros de dialogo se vean en negro -->
+<link type="text/css" href="/delta/resources/estilos/imss/fixGobMx.css" rel="stylesheet" />
+<!--[if IE]> <link href="/delta/resources/estilos/imss/ie.css" type="text/css" rel="stylesheet" /><![endif]-->
+
+<!-- jQuery -->
+<script type="text/javascript" src="/delta/resources/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="/delta/resources/js/jquery/dtable/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/delta/resources/js/jquery/dtable/jquery.dataTables.pagination.js"></script>
+<script type="text/javascript" src="/delta/resources/js/jquery/dtable/jquery.dataTables.sort.date.plugin.js"></script>
+<script type="text/javascript" src="/delta/resources/js/jquery/jquery-post-json.js"></script>
+<script type="text/javascript" src="/delta/resources/js/jquery/form2Object/form2object.js"></script>
+<script type="text/javascript" src="/delta/resources/js/jquery/form2Object/jquery.toObject.js"></script>
+<script type="text/javascript" src="/delta/resources/js/jquery/jquery.alphanum.js"></script>
+
+<!-- Bootstrap -->
+
+	<script type="text/javascript" src="/delta/resources/js/bootstrap/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="/delta/resources/js/bootstrap/DT_bootstrap.js"></script>
+<script type="text/javascript" src="/delta/resources/js/bootstrap/bootstrap-tooltip.js"></script>
+
+	<script type="text/javascript" src="/delta/resources/js/bootstrap/bootstrap-popover.js"></script>
+
+
+<!-- jQuery UI -->
+<script type="text/javascript" src="/delta/resources/js/jquery/jquery-ui.js"></script>
+<script type="text/javascript" src="/delta/resources/js/jquery/jquery.ui.datepicker-es.js" ></script>
+
+<!-- JSON -->
+<script type="text/javascript" src="/delta/resources/js/json/json2.js"></script>
+<script type="text/javascript" src="/delta/resources/js/json/json.min.js"></script>
+
+<!-- Cometd -->
+<script type="text/javascript" src="/delta/resources/js/org/cometd.js"></script>
+<script type="text/javascript" src="/delta/resources/js/org/cometd/AckExtension.js"></script>
+<script type="text/javascript" src="/delta/resources/js/org/cometd/ReloadExtension.js"></script>
+<script type="text/javascript" src="/delta/resources/js/org/cometd/TimeStampExtension.js"></script>
+<script type="text/javascript" src="/delta/resources/js/org/cometd/TimeSyncExtension.js"></script>
+
+<!-- Cometd and Jquery-->
+<script type="text/javascript" src="/delta/resources/js/jquery/comet/jquery.cookie.js"></script>
+<script type="text/javascript" src="/delta/resources/js/jquery/comet/jquery.cometd.js"></script>
+<script type="text/javascript" src="/delta/resources/js/jquery/comet/jquery.cometd-ack.js"></script>
+<script type="text/javascript" src="/delta/resources/js/jquery/comet/jquery.cometd-reload.js"></script>
+<script type="text/javascript" src="/delta/resources/js/jquery/comet/jquery.cometd-timestamp.js"></script>
+<script type="text/javascript" src="/delta/resources/js/jquery/comet/jquery.cometd-timesync.js"></script>
+
+<!-- JGrowl -->
+<script type="text/javascript" src="/delta/resources/js/jquery/comet/jquery.jgrowl.js"></script>
+
+<!-- Generales DELTA -->
+<script type="text/javascript" src="/delta/resources/js/delta/general.js"></script>
+<script type="text/javascript" src="/delta/resources/js/delta/CometConector.js"></script>
+<script type="text/javascript" src="/delta/resources/js/delta/gestionCtrlSelect.js"></script>
+<script type="text/javascript" src="/delta/resources/js/delta/procesaErrores.js"></script>
+<script type="text/javascript" src="/delta/resources/js/delta/limpiaFormularios.js"></script>
+
+<!-- html5 enabled -->
+<script type="text/javascript" src="/delta/resources/js/delta/html5.js"></script>
+
+<!-- Scripts de "Procesando..." -->
+<script type="text/javascript" src="/delta/resources/js/jquery/blockUI/jquery.blockUI.js"></script>
+
+<!-- Boton de accesibilidad -->
+<link href="/delta/resources/readabler/css/readabler.css" rel="stylesheet">
+
+
+
+<!-- Javascripts -->
+<script>
+	var context_path = '/gestionAsegurados-web-externo';
+	var server_scheme = 'http';
+	var server_port = '80';
+	var server_name = 'serviciosdigitales.imss.gob.mx';
+	
+	$(document).ready(function(){
+		
+		
+		$('form:not(.formNotBlock)').submit(function(){
+			$.blockUI();
+		});	
+		
+		if(server_port != '80') {
+			server_name = server_scheme + '://' + server_name + ':' + server_port + '/';
+		} else {
+			server_name = server_scheme + '://' + server_name + '/';
+		}
+		
+		
+		$('iframe').attr("frameBorder", "0");
+		
+		
+	});
+	
+</script>	
+
+
+<!--<style>
+    .u1st .accessibilityClass {
+        position: fixed !important;
+        top: 55px;
+        left: -50px;
+        transform: rotate(90deg);
+        _position: absolute !important;
+       _top: expression(document.compatMode && document.compatMode = 'CSS1Compat' ? documentElement.scrollTop : document.body.scrollTop);
+        z-index: 1000000;
+        cursor: pointer;
+        text-align: center;
+        padding: 3px 0;
+        border-radius: 4px;
+        font: bold 15px Arial !important;
+        background:  #F39200 !important;
+        color: #3B3835 !important;
+        padding: 7px 20px 7px 20px;
+
+    }
+</style>
+<script type="text/javascript" id="User1st_Settings" >
+
+	window['User1st'] = {
+		Web : {
+			settings : {
+				accessibilityBtn : {
+					useMyClass : 'accessibilityClass'
+				}
+			}
+		}
+	};
+</script>
+
+<script type="text/javascript" id="User1st_Loader" src="https://fe.user1st.info/Loader/head"></script>-->
+
+</head>
+<body>
+	<!-- Begin Digital Analytix Tag 1.1302.13 -->
+	<script type="text/javascript">
+		function udm_(e){var t="comScore=",n=document,r=n.cookie,i="",s="indexOf",o="substring",u="length",a=2048,f,l="&ns_",c="&",h,p,d,v,m=window,g=m.encodeURIComponent||escape;if(r[s](t)+1)for(d=0,p=r.split(";"),v=p[u];d<v;d++)h=p[d][s](t),h+1&&(i=c+unescape(p[d][o](h+t[u])));e+=l+"_t="+ +(new Date)+l+"c="+(n.characterSet||n.defaultCharset||"")+"&c8="+g(n.title)+i+"&c7="+g(n.URL)+"&c9="+g(n.referrer),e[u]>a&&e[s](c)>0&&(f=e[o](0,a-8).lastIndexOf(c),e=(e[o](0,f)+l+"cut="+g(e[o](f+1)))[o](0,a)),n.images?(h=new Image,m.ns_p||(ns_p=h),h.src=e):n.write("<","p","><",'img src="',e,'" height="1" width="1" alt="*"',"><","/p",">")};
+		function uid_call(a, b){
+			ui_c2 = 17183199; // your corporate c2 client value
+			ui_ns_site = 'gobmx'; // your sites identifier
+			window.b_ui_event = window.c_ui_event != null ? window.c_ui_event:"",window.c_ui_event = a;
+			var ui_pixel_url = 'https://sb.scorecardresearch.com/p?c1=2&c2='+ui_c2+'&ns_site='+ui_ns_site+'&name='+a+'&ns_type=hidden&type=hidden&ns_ui_type='+b;
+			var b="comScore=",c=document,d=c.cookie,e="",f="indexOf",g="substring",h="length",i=2048,j,k="&ns_",l="&",m,n,o,p,q=window,r=q.encodeURIComponent||escape;if(d[f](b)+1)for(o=0,n=d.split(";"),p=n[h];o<p;o++)m=n[o][f](b),m+1&&(e=l+unescape(n[o][g](m+b[h])));ui_pixel_url+=k+"_t="+ +(new Date)+k+"c="+(c.characterSet||c.defaultCharset||"")+"&c8="+r(c.title)+e+"&c7="+r(c.URL)+"&c9="+r(c.referrer)+"&b_ui_event="+b_ui_event+"&c_ui_event="+c_ui_event,ui_pixel_url[h]>i&&ui_pixel_url[f](l)>0&&(j=ui_pixel_url[g](0,i-8).lastIndexOf(l),ui_pixel_url=(ui_pixel_url[g](0,j)+k+"cut="+r(ui_pixel_url[g](j+1)))[g](0,i)),c.images?(m=new Image,q.ns_p||(ns_p=m),m.src=ui_pixel_url):c.write("<p><img src='",ui_pixel_url,"' height='1' width='1' alt='*'></p>");
+		}
+		udm_('https://sb.scorecardresearch.com/b?c1=2&c2=17183199&ns_site=gobmx&name=imss.asegurados.consulta_vigencia.inicio');
+	</script>
+	<noscript><p><img src="https://sb.scorecardresearch.com/p?c1=2&amp;c2=17183199&amp;ns_site=gobmx&amp;name=imss.asegurados.consulta_vigencia.inicio" height="1" width="1" alt="*"></p></noscript> 
+
+	<!-- Contenido -->
+	<main class="page">
+		<div class="container">
+			
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  history.go(1);
+  tipoTramite = '';
+
+	$(document).ready(initEvent);
+	
+	function initEvent() {
+		$("#regresarPantallaInicial").click(redireccionPaginaPrincipal);
+		$("#continuar").click(continuar);
+		$('#submitContinuar').click(function() {					
+			$('#registroAseguradoDatosBasicosForm').val('continuar');
+			document.getElementById("registroAseguradoDatosBasicosForm").submit();
+		});
+		$("#submitCancelar").click( function(){								 								 
+			 $("#myModalActualizacion").removeClass("modal show").addClass("modal hide");
+	 	}
+	 );
+	}
+	
+	function continuar() {
+			$("#continuar").attr("disabled", true);	
+			$('#myModal').modal({backdrop: 'static', keyboard: false})
+			$("#myModal").modal('show');
+			// document.getElementById("form_inicio").submit();
+	}
+
+	function redireccionPaginaPrincipal() {
+		if (tipoTramite == 'registro' || tipoTramite == 'registroD') {
+			location.href = "/portal-ciudadano-web-externo/derechohabientes/tramite/registro";
+		} else if (tipoTramite == 'cambioClinica') {
+			location.href = "/portal-ciudadano-web-externo/derechohabientes/tramite/cambioClinica";
+		} else {
+			location.href = "/portal-ciudadano-web-externo/home/testTramites";
+		}
+	}
+	
+</script>
+
+<input type="hidden" id="requiereActualizacion" value="" />
+
+<div class="contenedor">
+
+	<!-- Muesta los mensajes de error, este error es cuando encontro mas de un error -->
+	
+	
+	
+
+
+
+
+
+
+
+
+	
+	<ol class="breadcrumb">
+	  <li><a url="http://www.imss.gob.mx"><i class="icon icon-home"></i></a></li>
+	  <li><a url="http://www.imss.gob.mx/servicios-digitales">Tr&aacute;mites</a></li>
+	  <li class="active">Solicitud de constancia de vigencia de derechos</li>
+	</ol>
+	
+	<div class="row"> 
+				<div class="col-sm-7" style="margin-top:0px">
+					<h3>Solicitud de constancia de vigencia de derechos</h3>
+				</div>
+  				<div class="col-sm-5">
+  					
+ 			 	</div>
+	</div>
+	
+	<ul class="wizard-steps">
+		<li class="completed">
+			<h5>Paso 1</h5> 
+			<span>Iniciar trámite</span>
+		</li>
+		<li class="">
+			<h5>Paso 2</h5> 
+			<span>Finalizar trámite</span>
+		</li>
+		<li class=""><i class="glyphicon glyphicon-ok"></i></li>
+	</ul>
+	
+	<!-- Muesta mensaje al usuario informando la confirmacion via correo -->
+	
+
+	<div>
+		Ingresa los siguientes datos:
+	</div>
+	
+	<div>
+		Para realizar este trámite, debes tener a la mano:
+		<br/>
+		<ul>
+			<li>CURP</li>
+			<li>NSS (Número de Seguridad Social)</li>
+			<li>Correo electrónico válido, el cual será asociado a tu CURP</li>
+		</ul>
+	</div>
+
+	<br />
+	
+	
+
+	
+		
+	
+
+	
+
+	
+	
+	
+	
+
+	
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="/gestionAsegurados-web-externo/static/resources/js/delta/login/login.js"></script>
+
+<style>
+	.form-horizontal .control-label {
+    text-align: right;
+	}
+</style>
+
+<script>
+	var contextpath = "/gestionAsegurados-web-externo";
+	var mostrarNSS = "true";
+	var rutaController = "/gestionAsegurados-web-externo/vigencia/consultar";
+
+    function avisoPrivacidad() {
+        window.open(contextpath+'/avisoPrivacidad','_blank');
+    }
+    
+</script>
+
+<input type="hidden" id="requiereActualizacion" value="" />
+
+
+<div class="alert alert-danger" style="display: none" id="divErrorCampos">
+</div>
+
+<div class="alert alert-danger" style="display:none" id="erroresCaptura">
+</div>
+<form id="registroAseguradoDatosBasicosForm" class="form-horizontal" role="form" action="/gestionAsegurados-web-externo/vigencia/consultar" method="post">
+	<input type="hidden" id="enviarCorreo" name="enviarCorreo" value="true"/>
+		<div>
+			<div class="form-group">
+				<label for="curp" class="col-md-4 col-sm-5 col-xs-12 control-label">
+					CURP<span class="required">*</span>:
+				</label>
+				<div class="col-md-4 col-sm-7 col-xs-12">
+					
+					<input id="registroCurp" name="curp" class="form-control ns_" placeholder="Ingresa tu CURP" type="text" value="" maxlength="18"/>
+					
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="curp" class="col-md-4 col-sm-5 col-xs-12 control-label">
+				</label>
+				<div class="col-md-4 col-sm-7 col-xs-12">
+					&iquest;No te sabes tu CURP? <a href="https://consultas.curp.gob.mx/CurpSP/gobmx/inicio.jsp" onclick="uid_call('imss.asegurados.consulta_vigencia.inicio.consulta_curp','clickout')" target="_blank">Consúltala aquí.</a>
+				</div>
+			</div>
+			
+			
+				<div class="form-group">
+					<label for="nss" class="col-md-4 col-sm-5 col-xs-12 control-label">
+						NSS (Número de Seguridad Social)<span class="required">*</span>:
+					</label>
+					<div class="col-md-4 col-sm-7 col-xs-12">
+						
+						<input id="nss" name="nss" class="form-control ns_" placeholder="Ingresa tu N&uacute;mero de Seguridad Social" type="text" value="" maxlength="11"/>
+						
+					</div>
+				</div>
+				<div class="form-group">
+				<label for="curp" class="col-md-4  col-sm-5 col-xs-12 control-label">
+				</label>
+				<div class="col-md-4 col-sm-7 col-xs-12">
+					&iquest;No te sabes tu NSS? <a href="/gestionAsegurados-web-externo/asignacionNSS" onclick="uid_call('imss.asegurados.consulta_vigencia.inicio.consulta_nss','clickout')" target="_blank">Consúltalo aquí.</a>
+				</div>
+			</div>
+			
+
+			<div class="form-group">
+				<label for="correoElectronico.correo" class="col-md-4  col-sm-5 col-xs-12  control-label">
+				Correo electrónico<span class="required">*</span>:</label>
+				<div class="col-md-4 col-sm-7 col-xs-12">
+					
+					<input id="correoInput" name="correoElectronico.correo" class="form-control ns_" placeholder="Ingresa tu correo" type="text" value="" maxlength="100"/>
+					
+				</div>
+			</div>
+
+			<!-- Se utiliza el atributo correoElectronicoFiscal como auxiliar para poder realizar la confirmaciï¿½n de correo electrï¿½nico -->
+			<div class="form-group">
+				<label for="correoElectronicoFiscal.correo" class="col-md-4  col-sm-5 col-xs-12 control-label">
+					Confirma tu correo electrónico<span class="required">*</span>:</label>
+				<div class="col-md-4 col-sm-7 col-xs-12">
+					
+					<input id="correoConfirmacionInput" name="correoElectronicoFiscal.correo" class="form-control ns_" placeholder="Confirma tu correo" type="text" value="" maxlength="100"/>
+					
+					<div id="errorWrapperAux" style="display: none;">
+						<span class="error hiddenElement" style="margin-left: 0px;" id="mailConfirmacionErrors"></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="captcha" class="col-md-4  col-sm-5 col-xs-12 control-label" style="font-weight: normal;  ">
+					Escribe las letras de la imagen que se muestre<span class="required">*</span>: 
+					<label style="font-size: small;">(Usa mayúsculas y minúsculas)</label>
+				</label>
+				<div class="col-md-4 col-sm-7 col-xs-12">
+					<div class="row">
+						<div class="col-sm-7" >
+							<img src="" alt="Imagen Captcha" id="captchaImg"/>
+						</div>
+						<div class="col-sm-1">
+							<img alt="Cambiar captcha" src="/delta/resources/imagenes/refresh.png" id="refreshCaptcha"  style="cursor: pointer;" />
+						</div>
+						<div class="col-sm-4">
+							<input type="text" name="captcha" size="15" maxlength="10" class="form-control ns_" style="width: 100%;" placeholder="Captura"/>
+						</div>
+					</div>
+						
+						
+					<input type="hidden" id="strTipoTramite" name="tramite" value=""/>
+					
+				</div>
+			</div>
+		</div>
+	<br>
+	<!-- Controles -->
+
+	<div class="row" id="botonesConsultaVigencia">
+		<div class="col-sm-3 text-left" style="padding: 10px;">
+			<span id="labelCamposObligatoriosGeneral" class="required">*</span> Campos obligatorios
+		</div>
+		<div class="col-sm-5 text-right">
+			<button type="button" id="continuar" onclick="uid_call('imss.asegurados.consulta_vigencia.inicio.btn_continuar','clickin')" class="btn btn-primary">Continuar</button>
+		</div>
+	</div>
+	
+</form>
+
+
+	<div id="myModalActualizacion" backdrop='static' keyboard=false
+		class="modal " style="background: #000000ab;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					&nbsp;
+					<p>Actualizaci&oacute;n necesaria</p>
+				</div>
+				<div class="modal-body">
+					<p>
+						Existe otro correo electr&oacute;nico vinculado a sus datos, si usted no lo reconoce puede actualizarlo continuando en este tr&aacute;mite.
+					</p>
+				</div>
+				<div class="modal-footer">
+					<button id="submitCancelar" type="button" class="btn btn-secondary"
+						data-dismiss="modal">Salir</button>
+					<button id="submitContinuar" onclick="uid_call('imss.asegurados.consulta_vigencia.inicio.btn_continuar','clickin')" type="button"
+						class="btn btn-primary active ">Continuar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="alert alert-info" style="margin-top: 20px">
+				<p><strong>Aviso de privacidad simplificado</strong></p>
+				La recolecci&oacute;n de datos personales se lleva a cabo a trav&eacute;s de la p&aacute;gina 
+				electr&oacute;nica <a href="https://serviciosdigitales.imss.gob.mx/gestionAsegurados-web-externo/vigencia"
+				target="_blank">https://serviciosdigitales.imss.gob.mx/gestionAsegurados-web-externo/vigencia</a> cuyo administrador y responsable del tratamiento 
+				es la Coordinaci&oacute;n de Clasificaci&oacute;n de Empresas y Vigencia de Derechos del Instituto Mexicano del Seguro Social. 
+				Los datos personales que se recaban ser&aacute;n utilizados con la finalidad de generar y obtener la Constancia de 
+				vigencia de derechos para recibir servicio m&eacute;dico ante el IMSS con Homoclave IMSS-02-020-B. 
+ 				Si deseas conocer nuestro aviso de privacidad integral, lo podr&aacute;s consultar en el portal: 
+				<a href="https://serviciosdigitales.imss.gob.mx/gestionAsegurados-web-externo/avisoVigencia.jsp"
+				target="_blank">https://serviciosdigitales.imss.gob.mx/gestionAsegurados-web-externo/avisoVigencia.jsp</a>
+		</div>
+		
+		
+</div>
+
+		</div>
+	</main>
+	
+	<div>
+		<!-- GobMx -->
+		
+<script src="https://framework-gb.cdn.gob.mx/gobmx.js"></script>
+<script >
+	setTimeout ("reemplazaAcentos();", 1100); 
+	function reemplazaAcentos(){
+		var index = 0
+		$("footer.main-footer").each(function (index) {
+			$("footer.main-footer")[index].innerHTML = $("footer.main-footer")[index].innerHTML.replace(/Ã³/g, '&oacute;');
+			$("footer.main-footer")[index].innerHTML = $("footer.main-footer")[index].innerHTML.replace(/Ãº/g, '&uacute;');
+		});
+	}
+</script>
+
+	</div>
+	<!-- Begin DAx cs.js import -->
+	<script type="text/javascript" src="https://sb.scorecardresearch.com/c2/17183199/ct.js"></script>
+	<!-- End DAx cs.js import -->
+	<script type="text/javascript" src="https://framework-gb.cdn.gob.mx/data/encuesta_v1.0/encuestas.js"> </script>
+	
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="/delta/resources/readabler/js/readabler.js"></script>
+<script>
+    // Readabler initialization on load
+    window.addEventListener('DOMContentLoaded', () => {
+        console.log("It's OK")
+        try {
+            new Readabler( {
+                path: '/delta/resources/readabler/',
+                accessibilityStatementLink: '/delta/resources/readabler/accessibility-statement.html',
+            } );
+        } catch (e) {
+            console.warn( e );
+        }
+    });
+</script>
+
+</body>
+</html>

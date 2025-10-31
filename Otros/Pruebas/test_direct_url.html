@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Direct URLs</title>
+</head>
+<body>
+    <h2>Test Direct Download URLs</h2>
+    
+    <h3>Simple Test First</h3>
+    <a href="simple_test.php?format=csv" target="_blank">Test CSV Simple</a><br>
+    <a href="simple_test.php?format=pdf" target="_blank">Test PDF Simple</a><br>
+    <a href="simple_test.php?format=json" target="_blank">Test JSON Simple</a><br>
+    
+    <h3>CSV Download</h3>
+    <a href="api/reportes/gastos.php?start_date=2025-08-31&end_date=2025-09-30&format=csv" target="_blank">
+        Download CSV Report
+    </a>
+    
+    <h3>PDF Download</h3>
+    <a href="api/reportes/gastos.php?start_date=2025-08-31&end_date=2025-09-30&format=pdf" target="_blank">
+        Download PDF Report
+    </a>
+    
+    <h3>JSON Test</h3>
+    <a href="api/reportes/gastos.php?start_date=2025-08-31&end_date=2025-09-30&format=json" target="_blank">
+        View JSON Response
+    </a>
+    
+    <script>
+        console.log('Test page loaded');
+    </script>
+</body>
+</html>

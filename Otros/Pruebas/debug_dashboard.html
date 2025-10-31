@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { background: #d4edda; }
+        .error { background: #f8d7da; }
+    </style>
+</head>
+<body>
+    <h1>Debug Dashboard TransLogix</h1>
+    
+    <div class="test" id="session-test">
+        <h3>1. Test de Sesión</h3>
+        <p id="session-result">Probando...</p>
+    </div>
+    
+    <div class="test" id="api-test">
+        <h3>2. Test de API Dashboard</h3>
+        <p id="api-result">Probando...</p>
+    </div>
+    
+    <div class="test" id="scripts-test">
+        <h3>3. Test de Scripts</h3>
+        <p id="scripts-result">Probando...</p>
+    </div>
+    
+    <div class="test" id="dashboard-test">
+        <h3>4. Test de DashboardManager</h3>
+        <p id="dashboard-result">Probando...</p>
+    </div>
+
+    <script>
+        // Test 1: Sesión
+        fetch('/LogisticaFinal/api/auth/check.php')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('session-result').innerHTML = 
+                    `✅ Sesión activa: ${data.user?.nombre || 'Usuario'} (${data.user?.rol || 'Sin rol'})`;
+                document.getElementById('session-test').className = 'test success';
+            })
+            .catch(error => {
+                document.getElementById('session-result').innerHTML = `❌ Error de sesión: ${error.message}`;
+                document.getElementById('session-test').className = 'test error';
+            });
+
+        // Test 2: API Dashboard
+        fetch('/LogisticaFinal/api/dashboard/data.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('api-result').innerHTML = 
+                    `✅ API funciona. Gastos totales: $${data.expenses?.total_amount || 0}`;
+                document.getElementById('api-test').className = 'test success';
+            })
+            .catch(error => {
+                document.getElementById('api-result').innerHTML = `❌ Error de API: ${error.message}`;
+                document.getElementById('api-test').className = 'test error';
+            });
+
+        // Test 3: Scripts
+        setTimeout(() => {
+            const scripts = [
+                '/LogisticaFinal/assets/js/main.js',
+                '/LogisticaFinal/assets/js/dashboard.js'
+            ];
+            
+            let scriptsLoaded = 0;
+            let scriptsTotal = scripts.length;
+            
+            scripts.forEach(script => {
+                const scriptEl = document.createElement('script');
+                scriptEl.src = script;
+                scriptEl.onload = () => {
+                    scriptsLoaded++;
+                    if (scriptsLoaded === scriptsTotal) {
+                        document.getElementById('scripts-result').innerHTML = 
+                            `✅ Scripts cargados: ${scriptsLoaded}/${scriptsTotal}`;
+                        document.getElementById('scripts-test').className = 'test success';
+                        
+                        // Test 4: DashboardManager
+                        setTimeout(() => {
+                            if (window.DashboardManager) {
+                                document.getElementById('dashboard-result').innerHTML = 
+                                    `✅ DashboardManager disponible`;
+                                document.getElementById('dashboard-test').className = 'test success';
+                            } else {
+                                document.getElementById('dashboard-result').innerHTML = 
+                                    `❌ DashboardManager no disponible`;
+                                document.getElementById('dashboard-test').className = 'test error';
+                            }
+                        }, 1000);
+                    }
+                };
+                scriptEl.onerror = () => {
+                    document.getElementById('scripts-result').innerHTML = 
+                        `❌ Error cargando script: ${script}`;
+                    document.getElementById('scripts-test').className = 'test error';
+                };
+                document.head.appendChild(scriptEl);
+            });
+        }, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧹 Limpiar Cache Completo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-white">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="display-4">🧹 Limpieza Completa de Cache</h1>
+            <p class="lead">Este script limpiará TODO el cache del sistema</p>
+        </div>
+
+        <div class="card bg-secondary text-white mb-4">
+            <div class="card-body">
+                <h3>📊 Estado del Cache</h3>
+                <div id="cacheStatus"></div>
+            </div>
+        </div>
+
+        <div class="d-grid gap-3">
+            <button onclick="limpiarTodo()" class="btn btn-danger btn-lg">
+                🗑️ LIMPIAR TODO EL CACHE
+            </button>
+            
+            <button onclick="limpiarLocalStorage()" class="btn btn-warning btn-lg">
+                📦 Limpiar LocalStorage
+            </button>
+            
+            <button onclick="limpiarSessionStorage()" class="btn btn-warning btn-lg">
+                🔐 Limpiar SessionStorage
+            </button>
+            
+            <button onclick="limpiarCookies()" class="btn btn-warning btn-lg">
+                🍪 Limpiar Cookies
+            </button>
+            
+            <button onclick="forzarRecarga()" class="btn btn-primary btn-lg">
+                🔄 Forzar Recarga (Ctrl+F5)
+            </button>
+            
+            <a href="index.html" class="btn btn-success btn-lg">
+                ✅ Ir al Sistema (Limpio)
+            </a>
+        </div>
+
+        <div class="alert alert-info mt-4">
+            <h5>💡 Instrucciones:</h5>
+            <ol>
+                <li>Haz clic en "LIMPIAR TODO EL CACHE"</li>
+                <li>Espera a que termine</li>
+                <li>Haz clic en "Forzar Recarga"</li>
+                <li>Ve al sistema</li>
+            </ol>
+        </div>
+
+        <div id="resultado" class="mt-4"></div>
+    </div>
+
+    <script>
+        // Mostrar estado del cache
+        function mostrarEstado() {
+            const status = document.getElementById('cacheStatus');
+            let html = '<div class="row">';
+            
+            // LocalStorage
+            html += '<div class="col-md-4">';
+            html += '<strong>LocalStorage:</strong><br>';
+            html += Object.keys(localStorage).length + ' items<br>';
+            html += '<small>' + Object.keys(localStorage).join(', ') + '</small>';
+            html += '</div>';
+            
+            // SessionStorage
+            html += '<div class="col-md-4">';
+            html += '<strong>SessionStorage:</strong><br>';
+            html += Object.keys(sessionStorage).length + ' items<br>';
+            html += '<small>' + Object.keys(sessionStorage).join(', ') + '</small>';
+            html += '</div>';
+            
+            // Cookies
+            html += '<div class="col-md-4">';
+            html += '<strong>Cookies:</strong><br>';
+            const cookies = document.cookie.split(';').filter(c => c.trim());
+            html += cookies.length + ' cookies<br>';
+            html += '<small>' + cookies.map(c => c.split('=')[0].trim()).join(', ') + '</small>';
+            html += '</div>';
+            
+            html += '</div>';
+            status.innerHTML = html;
+        }
+
+        // Limpiar LocalStorage
+        function limpiarLocalStorage() {
+            const antes = Object.keys(localStorage).length;
+            localStorage.clear();
+            const despues = Object.keys(localStorage).length;
+            
+            mostrarResultado('✅ LocalStorage limpiado', `${antes} items eliminados`);
+            mostrarEstado();
+        }
+
+        // Limpiar SessionStorage
+        function limpiarSessionStorage() {
+            const antes = Object.keys(sessionStorage).length;
+            sessionStorage.clear();
+            const despues = Object.keys(sessionStorage).length;
+            
+            mostrarResultado('✅ SessionStorage limpiado', `${antes} items eliminados`);
+            mostrarEstado();
+        }
+
+        // Limpiar Cookies
+        function limpiarCookies() {
+            const cookies = document.cookie.split(';');
+            let count = 0;
+            
+            cookies.forEach(cookie => {
+                const name = cookie.split('=')[0].trim();
+                if (name) {
+                    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+                    count++;
+                }
+            });
+            
+            mostrarResultado('✅ Cookies limpiadas', `${count} cookies eliminadas`);
+            mostrarEstado();
+        }
+
+        // Limpiar todo
+        function limpiarTodo() {
+            mostrarResultado('🧹 Limpiando...', 'Por favor espera');
+            
+            setTimeout(() => {
+                // LocalStorage
+                const localCount = Object.keys(localStorage).length;
+                localStorage.clear();
+                
+                // SessionStorage
+                const sessionCount = Object.keys(sessionStorage).length;
+                sessionStorage.clear();
+                
+                // Cookies
+                const cookies = document.cookie.split(';');
+                let cookieCount = 0;
+                cookies.forEach(cookie => {
+                    const name = cookie.split('=')[0].trim();
+                    if (name) {
+                        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+                        cookieCount++;
+                    }
+                });
+                
+                // Cache API (si está disponible)
+                if ('caches' in window) {
+                    caches.keys().then(names => {
+                        names.forEach(name => caches.delete(name));
+                    });
+                }
+                
+                mostrarResultado(
+                    '✅ ¡TODO LIMPIADO!', 
+                    `LocalStorage: ${localCount} items<br>` +
+                    `SessionStorage: ${sessionCount} items<br>` +
+                    `Cookies: ${cookieCount} cookies<br>` +
+                    `Cache API: Limpiado`
+                );
+                
+                mostrarEstado();
+            }, 500);
+        }
+
+        // Forzar recarga
+        function forzarRecarga() {
+            mostrarResultado('🔄 Recargando...', 'Forzando recarga completa');
+            setTimeout(() => {
+                location.reload(true);
+            }, 1000);
+        }
+
+        // Mostrar resultado
+        function mostrarResultado(titulo, mensaje) {
+            const resultado = document.getElementById('resultado');
+            resultado.innerHTML = `
+                <div class="alert alert-success">
+                    <h4>${titulo}</h4>
+                    <p>${mensaje}</p>
+                </div>
+            `;
+        }
+
+        // Mostrar estado al cargar
+        mostrarEstado();
+    </script>
+</body>
+</html>

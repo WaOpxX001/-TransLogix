@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Subida de Fotos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .test-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .log-container {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+        .log-entry {
+            margin-bottom: 0.5rem;
+        }
+        .log-success { color: #00ff00; }
+        .log-error { color: #ff0000; }
+        .log-warning { color: #ffaa00; }
+        .log-info { color: #00aaff; }
+        #preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 1rem;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="test-card">
+            <h1 class="text-center mb-4">
+                <i class="fas fa-camera text-primary"></i>
+                Test de Subida de Fotos
+            </h1>
+            
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                <strong>Nota:</strong> Este es un test simplificado para verificar que la subida de fotos funciona correctamente.
+            </div>
+
+            <form id="testForm">
+                <div class="mb-3">
+                    <label class="form-label">
+                        <i class="fas fa-hashtag"></i> ID de Gasto (simulado)
+                    </label>
+                    <input type="number" class="form-control" id="expenseId" value="999" required>
+                    <small class="text-muted">Usa un ID de prueba (ej: 999)</small>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        <i class="fas fa-image"></i> Seleccionar Foto
+                    </label>
+                    <input type="file" class="form-control" id="fileInput" accept="image/*" required>
+                    <small class="text-muted">Máximo 5MB - Formatos: JPG, PNG, GIF, WEBP</small>
+                </div>
+
+                <div id="previewContainer" style="display: none;">
+                    <label class="form-label">Vista Previa:</label>
+                    <img id="preview" alt="Vista previa">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-3">
+                    <i class="fas fa-upload me-2"></i>Probar Subida
+                </button>
+            </form>
+
+            <div class="log-container" id="logContainer">
+                <div class="log-entry log-info">📋 Esperando archivo...</div>
+            </div>
+
+            <div class="text-center mt-3">
+                <button class="btn btn-outline-secondary" onclick="clearLogs()">
+                    <i class="fas fa-trash me-2"></i>Limpiar Logs
+                </button>
+                <button class="btn btn-outline-primary ms-2" onclick="location.href='index.html'">
+                    <i class="fas fa-home me-2"></i>Volver al Sistema
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const logContainer = document.getElementById('logContainer');
+        const fileInput = document.getElementById('fileInput');
+        const preview = document.getElementById('preview');
+        const previewContainer = document.getElementById('previewContainer');
+        const testForm = document.getElementById('testForm');
+
+        function log(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            
+            const icon = {
+                'success': '✅',
+                'error': '❌',
+                'warning': '⚠️',
+                'info': 'ℹ️'
+            }[type] || 'ℹ️';
+            
+            entry.textContent = `${icon} ${new Date().toLocaleTimeString()} - ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function clearLogs() {
+            logContainer.innerHTML = '<div class="log-entry log-info">📋 Logs limpiados</div>';
+        }
+
+        // Preview de imagen
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            log(`Archivo seleccionado: ${file.name}`, 'info');
+            log(`Tamaño: ${(file.size / 1024).toFixed(2)} KB`, 'info');
+            log(`Tipo: ${file.type}`, 'info');
+
+            // Validar tamaño
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                log('Error: El archivo es muy grande (máximo 5MB)', 'error');
+                fileInput.value = '';
+                return;
+            }
+
+            // Validar tipo
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                log('Error: Tipo de archivo no válido', 'error');
+                fileInput.value = '';
+                return;
+            }
+
+            // Mostrar preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                preview.src = e.target.result;
+                previewContainer.style.display = 'block';
+                log('Vista previa cargada', 'success');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Test de subida
+        testForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const expenseId = document.getElementById('expenseId').value;
+            const file = fileInput.files[0];
+
+            if (!file) {
+                log('Error: No se seleccionó ningún archivo', 'error');
+                return;
+            }
+
+            log('🚀 Iniciando test de subida...', 'info');
+            log(`📦 Preparando FormData...`, 'info');
+
+            const formData = new FormData();
+            formData.append('receipt', file);
+            formData.append('expense_id', expenseId);
+
+            log(`📋 FormData creado:`, 'info');
+            log(`   - receipt: ${file.name}`, 'info');
+            log(`   - expense_id: ${expenseId}`, 'info');
+
+            try {
+                log('📤 Enviando archivo al servidor...', 'info');
+                
+                const response = await fetch('/LogisticaFinal/api/gastos/upload.php', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+
+                log(`📥 Respuesta recibida: ${response.status} ${response.statusText}`, 
+                    response.ok ? 'success' : 'error');
+
+                const result = await response.json();
+                log(`📋 Respuesta JSON:`, 'info');
+                log(JSON.stringify(result, null, 2), result.success ? 'success' : 'error');
+
+                if (result.success) {
+                    log('✅ ¡ÉXITO! Archivo subido correctamente', 'success');
+                    log(`📁 Nombre del archivo: ${result.filename}`, 'success');
+                    if (result.path) {
+                        log(`📂 Ruta: ${result.path}`, 'success');
+                    }
+                } else {
+                    log(`❌ Error: ${result.error}`, 'error');
+                }
+
+            } catch (error) {
+                log(`❌ Error de red: ${error.message}`, 'error');
+                console.error('Error completo:', error);
+            }
+        });
+
+        // Log inicial
+        log('Sistema de test de subida de fotos iniciado', 'success');
+        log('Selecciona un archivo para comenzar', 'info');
+    </script>
+</body>
+</html>

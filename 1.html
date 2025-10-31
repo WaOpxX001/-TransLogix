@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransportePro - Sistema de Gestión Logística</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #22d3ee;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f1f5f9;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .bg-animation span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: move 25s linear infinite;
+            bottom: -150px;
+        }
+
+        .bg-animation span:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        .bg-animation span:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+
+        .bg-animation span:nth-child(3) {
+            left: 70%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 4s;
+        }
+
+        @keyframes move {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+
+        /* Login Container */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: var(--dark);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: #f8fafc;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 280px;
+            background: linear-gradient(135deg, var(--dark) 0%, #334155 100%);
+            padding: 20px;
+            overflow-y: auto;
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .sidebar-header h2 {
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-role {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 5px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .top-bar-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0.1;
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .stat-icon.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .stat-icon.success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+        }
+
+        .stat-icon.warning {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            color: white;
+        }
+
+        .stat-icon.danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .stat-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 10px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .stat-change.positive {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .stat-change.negative {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* Forms Section */
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .form-title {
+            font-size: 1.25rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 1.2rem;
+        }
+
+        .form-control.has-icon {
+            padding-left: 40px;
+        }
+
+        /* Tables */
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+            color: var(--dark);
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 15px;
+            font-size: 0.9rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #475569;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .badge-warning {
+            background: #fed7aa;
+            color: #c2410c;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .btn-edit:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-delete:hover {
+            background: #dc2626;
+            color: white;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        /* Charts Container */
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            height: 400px;
+            position: relative;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            border-radius: 10px;
+            font-size: 1.2rem;
+            color: #6b7280;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.3s;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        /* Page Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>🚚 TransportePro</h1>
+                <p>Sistema de Gestión Logística Inteligente</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Correo Electrónico</label>
+                    <input type="email" id="email" class="form-control" placeholder="tu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Tipo de Usuario</label>
+                    <select id="role" class="form-control" required>
+                        <option value="transportista">🚛 Transportista</option>
+                        <option value="admin">👔 Administrador</option>
+                        <option value="supervisor">📊 Supervisor</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span>Iniciar Sesión</span>
+                    <span>→</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <!-- Mobile Toggle -->
+        <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>🚚 TransportePro</h2>
+            </div>
+
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">JD</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">Juan Díaz</div>
+                    <div class="user-role" id="userRole">Transportista</div>
+                </div>
+            </div>
+
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <!-- Dynamic menu items will be inserted here -->
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                <div class="top-bar-actions">
+                    <button class="btn btn-primary" onclick="exportReports()">
+                        📊 Exportar Reportes
+                    </button>
+                    <button class="btn" style="background: #ef4444; color: white;" onclick="logout()">
+                        Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div id="dashboardSection" class="section active">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">💰</div>
+                        <div class="stat-value">$45,231</div>
+                        <div class="stat-label">Gastos Totales del Mes</div>
+                        <div class="stat-change positive">↑ 12% vs mes anterior</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success">⛽</div>
+                        <div class="stat-value">2,845 L</div>
+                        <div class="stat-label">Combustible Consumido</div>
+                        <div class="stat-change negative">↓ 5% vs mes anterior</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">🔧</div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Mantenimientos Realizados</div>
+                        <div class="stat-change positive">↑ 3 este mes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon danger">🚚</div>
+                        <div class="stat-value">156</div>
+                        <div class="stat-label">Viajes Completados</div>
+                        <div class="stat-change positive">↑ 18% vs mes anterior</div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 20px; color: var(--dark);">📊 Gastos por Categoría - Mes Actual</h3>
+                    <canvas id="expenseChart" style="max-height: 350px;"></canvas>
+                </div>
+
+                <!-- Recent Activity Table -->
+                <div class="table-container">
+                    <h3 style="margin-bottom: 20px; color: var(--dark);">Actividad Reciente</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Transportista</th>
+                                <th>Tipo</th>
+                                <th>Monto</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityTable">
+                            <tr>
+                                <td>03/09/2025</td>
+                                <td>Juan Díaz</td>
+                                <td><span class="badge badge-success">Combustible</span></td>
+                                <td>$850.00</td>
+                                <td><span class="badge badge-success">Aprobado</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon btn-edit">✏️</button>
+                                        <button class="btn-icon btn-delete">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>02/09/2025</td>
+                                <td>María López</td>
+                                <td><span class="badge badge-warning">Mantenimiento</span></td>
+                                <td>$2,300.00</td>
+                                <td><span class="badge badge-warning">Pendiente</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon btn-edit">✏️</button>
+                                        <button class="btn-icon btn-delete">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>01/09/2025</td>
+                                <td>Carlos Ruiz</td>
+                                <td><span class="badge badge-danger">Multa</span></td>
+                                <td>$500.00</td>
+                                <td><span class="badge badge-success">Aprobado</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon btn-edit">✏️</button>
+                                        <button class="btn-icon btn-delete">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Registro de Gastos Section -->
+            <div id="gastosSection" class="section">
+                <div class="form-card">
+                    <div class="form-header">
+                        <h2 class="form-title">📝 Registrar Nuevo Gasto</h2>
+                    </div>
+                    <form id="expenseForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Tipo de Gasto</label>
+                                <select class="form-control" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="combustible">⛽ Combustible</option>
+                                    <option value="mantenimiento">🔧 Mantenimiento</option>
+                                    <option value="peaje">🛣️ Peajes</option>
+                                    <option value="multa">🚨 Multas</option>
+                                    <option value="hospedaje">🏨 Hospedaje</option>
+                                    <option value="comida">🍴 Alimentación</option>
+                                    <option value="otros">📦 Otros</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha</label>
+                                <input type="date" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Monto ($)</label>
+                                <div class="input-group">
+                                    <span class="input-icon">💵</span>
+                                    <input type="number" class="form-control has-icon" placeholder="0.00" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Vehículo</label>
+                                <select class="form-control" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="1">🚚 Camión #001 - Volvo FH16</option>
+                                    <option value="2">🚛 Camión #002 - Kenworth T680</option>
+                                    <option value="3">🚐 Van #003 - Mercedes Sprinter</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Kilometraje Actual</label>
+                                <div class="input-group">
+                                    <span class="input-icon">📏</span>
+                                    <input type="number" class="form-control has-icon" placeholder="0" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Litros (si es combustible)</label>
+                                <div class="input-group">
+                                    <span class="input-icon">⛽</span>
+                                    <input type="number" class="form-control has-icon" placeholder="0.00" step="0.01">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Número de Factura</label>
+                                <input type="text" class="form-control" placeholder="FAC-0000" required>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label>Descripción / Notas</label>
+                            <textarea class="form-control" rows="3" placeholder="Agregar detalles adicionales..."></textarea>
+                        </div>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label>📷 Adjuntar Foto del Recibo</label>
+                            <input type="file" class="form-control" accept="image/*">
+                        </div>
+                        <div style="display: flex; gap: 15px; margin-top: 25px;">
+                            <button type="submit" class="btn btn-primary" style="flex: 1;">
+                                💾 Guardar Gasto
+                            </button>
+                            <button type="reset" class="btn" style="background: #e5e7eb; color: var(--dark);">
+                                🔄 Limpiar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Lista de Gastos Recientes -->
+                <div class="table-container">
+                    <h3 style="margin-bottom: 20px; color: var(--dark);">Mis Gastos Recientes</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Tipo</th>
+                                <th>Vehículo</th>
+                                <th>Monto</th>
+                                <th>Factura</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>03/09/2025</td>
+                                <td><span class="badge badge-success">Combustible</span></td>
+                                <td>Camión #001</td>
+                                <td>$850.00</td>
+                                <td>FAC-2341</td>
+                                <td><span class="badge badge-success">Aprobado</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon btn-edit">👁️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Transportistas Section (Admin) -->
+            <div id="transportistasSection" class="section">
+                <div class="form-card">
+                    <div class="form-header">
+                        <h2 class="form-title">👥 Gestión de Transportistas</h2>
+                        <button class="btn btn-primary" onclick="openModal('addDriver')">
+                            ➕ Nuevo Transportista
+                        </button>
+                    </div>
+                    
+                    <div class="table-container" style="padding: 0; box-shadow: none;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Teléfono</th>
+                                    <th>Licencia</th>
+                                    <th>Vehículo Asignado</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#001</td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <div class="user-avatar" style="width: 35px; height: 35px; font-size: 0.9rem;">JD</div>
+                                            <div>
+                                                <div style="font-weight: 600;">Juan Díaz</div>
+                                                <div style="font-size: 0.85rem; color: #64748b;">juan@transporte.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>555-0123</td>
+                                    <td>CDL-A-2024</td>
+                                    <td>Camión #001</td>
+                                    <td><span class="badge badge-success">Activo</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon btn-edit">✏️</button>
+                                            <button class="btn-icon btn-delete">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#002</td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <div class="user-avatar" style="width: 35px; height: 35px; font-size: 0.9rem; background: linear-gradient(135deg, #10b981, #059669);">ML</div>
+                                            <div>
+                                                <div style="font-weight: 600;">María López</div>
+                                                <div style="font-size: 0.85rem; color: #64748b;">maria@transporte.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>555-0456</td>
+                                    <td>CDL-B-2023</td>
+                                    <td>Van #003</td>
+                                    <td><span class="badge badge-success">Activo</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon btn-edit">✏️</button>
+                                            <button class="btn-icon btn-delete">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vehículos Section -->
+            <div id="vehiculosSection" class="section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">🚚</div>
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">Vehículos Totales</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success">✅</div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">En Operación</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">🔧</div>
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">En Mantenimiento</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon danger">⚠️</div>
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Fuera de Servicio</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="form-header" style="padding: 0; margin-bottom: 20px;">
+                        <h3 style="color: var(--dark);">Flota de Vehículos</h3>
+                        <button class="btn btn-primary" onclick="openModal('addVehicle')">
+                            ➕ Nuevo Vehículo
+                        </button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Placa</th>
+                                <th>Tipo</th>
+                                <th>Marca/Modelo</th>
+                                <th>Año</th>
+                                <th>Kilometraje</th>
+                                <th>Último Servicio</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ABC-123</td>
+                                <td>🚚 Camión</td>
+                                <td>Volvo FH16</td>
+                                <td>2022</td>
+                                <td>45,230 km</td>
+                                <td>15/08/2025</td>
+                                <td><span class="badge badge-success">Operativo</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon btn-edit">✏️</button>
+                                        <button class="btn-icon btn-delete">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reportes Section -->
+            <div id="reportesSection" class="section">
+                <div class="form-card">
+                    <div class="form-header">
+                        <h2 class="form-title">📊 Generador de Reportes</h2>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Tipo de Reporte</label>
+                            <select class="form-control" id="reportType">
+                                <option value="gastos">Reporte de Gastos</option>
+                                <option value="combustible">Consumo de Combustible</option>
+                                <option value="mantenimiento">Historial de Mantenimiento</option>
+                                <option value="transportistas">Desempeño de Transportistas</option>
+                                <option value="vehiculos">Estado de Vehículos</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha Inicio</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha Fin</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Formato</label>
+                            <select class="form-control">
+                                <option value="pdf">PDF</option>
+                                <option value="excel">Excel</option>
+                                <option value="csv">CSV</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="generateReport()" style="margin-top: 20px;">
+                        📥 Generar y Descargar Reporte
+                    </button>
+                </div>
+
+                <!-- Preview Area -->
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 20px; color: var(--dark);">Vista Previa del Reporte</h3>
+                    <div class="chart-placeholder">
+                        <p>Selecciona los parámetros y genera el reporte para ver la vista previa</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roles Section (Admin) -->
+            <div id="rolesSection" class="section">
+                <div class="form-card">
+                    <div class="form-header">
+                        <h2 class="form-title">🔐 Gestión de Roles y Permisos</h2>
+                        <button class="btn btn-primary" onclick="openModal('addRole')">
+                            ➕ Nuevo Rol
+                        </button>
+                    </div>
+                    
+                    <div class="stats-grid" style="margin-bottom: 30px;">
+                        <div class="stat-card">
+                            <h4 style="color: var(--dark); margin-bottom: 15px;">👔 Administrador</h4>
+                            <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">Acceso completo al sistema</p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                                <span class="badge badge-success">Todos los permisos</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <h4 style="color: var(--dark); margin-bottom: 15px;">📊 Supervisor</h4>
+                            <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">Supervisión y reportes</p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                                <span class="badge badge-warning">Ver reportes</span>
+                                <span class="badge badge-warning">Aprobar gastos</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <h4 style="color: var(--dark); margin-bottom: 15px;">🚛 Transportista</h4>
+                            <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">Registro de gastos</p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                                <span class="badge badge-success">Registrar gastos</span>
+                                <span class="badge badge-success">Ver propios</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container" style="padding: 0; box-shadow: none;">
+                        <h3 style="margin-bottom: 20px; color: var(--dark);">Usuarios por Rol</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Email</th>
+                                    <th>Rol Actual</th>
+                                    <th>Último Acceso</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Admin Principal</td>
+                                    <td>admin@transporte.com</td>
+                                    <td><span class="badge badge-danger">Administrador</span></td>
+                                    <td>Hace 2 horas</td>
+                                    <td><span class="badge badge-success">Activo</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon btn-edit">✏️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Floating Action Button -->
+        <button class="fab" onclick="openQuickAdd()">+</button>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Título del Modal</h2>
+            <div id="modalBody">
+                <!-- Dynamic content -->
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 25px;">
+                <button class="btn btn-primary" style="flex: 1;" onclick="saveModal()">Guardar</button>
+                <button class="btn" style="background: #e5e7eb; color: var(--dark);" onclick="closeModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span id="toastMessage">Mensaje</span>
+    </div>
+
+    <script>
+        // State Management
+        let currentUser = null;
+        let currentSection = 'dashboardSection';
+
+        // Login Function
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const role = document.getElementById('role').value;
+            
+            // Simulate login
+            currentUser = {
+                name: email.split('@')[0],
+                email: email,
+                role: role,
+                initials: email.substring(0, 2).toUpperCase()
+            };
+            
+            // Setup Dashboard
+            setupDashboard();
+            
+            // Show dashboard
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            
+            // Load dashboard data after login
+            setTimeout(() => {
+                loadDashboardData();
+            }, 500);
+            
+            showToast('¡Bienvenido! Has iniciado sesión correctamente', 'success');
+        });
+
+        // Setup Dashboard based on role
+        function setupDashboard() {
+            const userName = document.getElementById('userName');
+            const userRole = document.getElementById('userRole');
+            const userAvatar = document.getElementById('userAvatar');
+            const navMenu = document.getElementById('navMenu');
+            
+            userName.textContent = currentUser.name;
+            userRole.textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+            userAvatar.textContent = currentUser.initials;
+            
+            // Build menu based on role
+            let menuItems = [];
+            
+            if (currentUser.role === 'admin') {
+                menuItems = [
+                    { id: 'dashboard', icon: '📊', label: 'Dashboard', section: 'dashboardSection' },
+                    { id: 'gastos', icon: '💰', label: 'Registro de Gastos', section: 'gastosSection' },
+                    { id: 'transportistas', icon: '👥', label: 'Transportistas', section: 'transportistasSection' },
+                    { id: 'vehiculos', icon: '🚚', label: 'Vehículos', section: 'vehiculosSection' },
+                    { id: 'reportes', icon: '📈', label: 'Reportes', section: 'reportesSection' },
+                    { id: 'roles', icon: '🔐', label: 'Roles y Permisos', section: 'rolesSection' }
+                ];
+            } else if (currentUser.role === 'supervisor') {
+                menuItems = [
+                    { id: 'dashboard', icon: '📊', label: 'Dashboard', section: 'dashboardSection' },
+                    { id: 'gastos', icon: '💰', label: 'Aprobar Gastos', section: 'gastosSection' },
+                    { id: 'vehiculos', icon: '🚚', label: 'Vehículos', section: 'vehiculosSection' },
+                    { id: 'reportes', icon: '📈', label: 'Reportes', section: 'reportesSection' }
+                ];
+            } else {
+                menuItems = [
+                    { id: 'dashboard', icon: '📊', label: 'Mi Dashboard', section: 'dashboardSection' },
+                    { id: 'gastos', icon: '💰', label: 'Mis Gastos', section: 'gastosSection' },
+                    { id: 'vehiculos', icon: '🚚', label: 'Mi Vehículo', section: 'vehiculosSection' }
+                ];
+            }
+            
+            navMenu.innerHTML = menuItems.map(item => `
+                <li class="nav-item">
+                    <a href="#" class="nav-link ${item.section === 'dashboardSection' ? 'active' : ''}" 
+                       onclick="navigateTo('${item.section}', '${item.label}')">
+                        <span>${item.icon}</span>
+                        <span>${item.label}</span>
+                    </a>
+                </li>
+            `).join('');
+        }
+
+        // Navigation
+        function navigateTo(sectionId, title) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update page title
+            document.getElementById('pageTitle').textContent = title;
+            
+            // Update nav active state
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            currentSection = sectionId;
+            
+            // Close mobile sidebar
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        }
+
+        // Toggle Sidebar (Mobile)
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        // Modal Functions
+        function openModal(type) {
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            switch(type) {
+                case 'addDriver':
+                    modalTitle.textContent = '➕ Agregar Nuevo Transportista';
+                    modalBody.innerHTML = `
+                        <div class="form-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" class="form-control" placeholder="Juan Pérez">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" placeholder="juan@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="tel" class="form-control" placeholder="555-0000">
+                        </div>
+                        <div class="form-group">
+                            <label>Número de Licencia</label>
+                            <input type="text" class="form-control" placeholder="CDL-XXX-XXXX">
+                        </div>
+                    `;
+                    break;
+                case 'addVehicle':
+                    modalTitle.textContent = '➕ Agregar Nuevo Vehículo';
+                    modalBody.innerHTML = `
+                        <div class="form-group">
+                            <label>Placa</label>
+                            <input type="text" class="form-control" placeholder="ABC-123">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo</label>
+                            <select class="form-control">
+                                <option>Camión</option>
+                                <option>Van</option>
+                                <option>Pickup</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Marca</label>
+                            <input type="text" class="form-control" placeholder="Volvo">
+                        </div>
+                        <div class="form-group">
+                            <label>Modelo</label>
+                            <input type="text" class="form-control" placeholder="FH16">
+                        </div>
+                    `;
+                    break;
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function saveModal() {
+            showToast('✅ Guardado exitosamente', 'success');
+            closeModal();
+        }
+
+        // Toast Notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toast.className = 'toast ' + type;
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Export Reports
+        function exportReports() {
+            showToast('📊 Descargando reportes...', 'success');
+            // Simulate download
+            setTimeout(() => {
+                showToast('✅ Reportes descargados exitosamente', 'success');
+            }, 2000);
+        }
+
+        // Generate Report
+        function generateReport() {
+            const reportType = document.getElementById('reportType').value;
+            showToast(`📊 Generando reporte de ${reportType}...`, 'success');
+            
+            // Update preview
+            document.querySelector('.chart-placeholder').innerHTML = `
+                <div style="text-align: center;">
+                    <div class="spinner" style="margin: 0 auto;"></div>
+                    <p style="margin-top: 20px;">Generando reporte...</p>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                document.querySelector('.chart-placeholder').innerHTML = `
+                    <p>✅ Reporte generado - Listo para descargar</p>
+                    <button class="btn btn-primary" style="margin-top: 15px;">📥 Descargar Ahora</button>
+                `;
+                showToast('✅ Reporte generado exitosamente', 'success');
+            }, 2000);
+        }
+
+        // Quick Add
+        function openQuickAdd() {
+            openModal('addDriver');
+        }
+
+        // Logout
+        function logout() {
+            if(confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                document.getElementById('dashboard').style.display = 'none';
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('loginForm').reset();
+                showToast('Has cerrado sesión correctamente', 'success');
+            }
+        }
+
+        // Initialize Charts (Placeholder)
+        window.addEventListener('load', function() {
+            initializeExpenseChart();
+            loadDashboardData();
+        });
+
+        // Initialize Expense Chart
+        function initializeExpenseChart() {
+            const ctx = document.getElementById('expenseChart');
+            if (!ctx) return;
+
+            expenseChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Combustible', 'Mantenimiento', 'Peajes', 'Multas', 'Hospedaje', 'Alimentación', 'Otros'],
+                    datasets: [{
+                        data: [0, 0, 0, 0, 0, 0, 0],
+                        backgroundColor: [
+                            '#10b981', // Combustible - Verde
+                            '#f59e0b', // Mantenimiento - Amarillo
+                            '#6366f1', // Peajes - Azul
+                            '#ef4444', // Multas - Rojo
+                            '#8b5cf6', // Hospedaje - Púrpura
+                            '#06b6d4', // Alimentación - Cian
+                            '#64748b'  // Otros - Gris
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                    return `${label}: $${value.toLocaleString()} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Load Dashboard Data
+        async function loadDashboardData() {
+            try {
+                // Load expense data from API
+                const response = await fetch('../api.php?action=getExpenses', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.expenses) {
+                        updateExpenseChart(data.expenses);
+                        updateDashboardStats(data.expenses);
+                        updateActivityTable(data.expenses);
+                    }
+                } else {
+                    console.log('No se pudieron cargar los datos de gastos');
+                    // Load sample data for demonstration
+                    loadSampleData();
+                }
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                // Load sample data for demonstration
+                loadSampleData();
+            }
+        }
+
+        // Update Expense Chart with real data
+        function updateExpenseChart(expenses) {
+            if (!expenseChart || !expenses) return;
+
+            const categoryTotals = {
+                'combustible': 0,
+                'mantenimiento': 0,
+                'peaje': 0,
+                'multa': 0,
+                'hospedaje': 0,
+                'comida': 0,
+                'otros': 0
+            };
+
+            // Calculate totals by category
+            expenses.forEach(expense => {
+                const category = expense.tipo || 'otros';
+                const amount = parseFloat(expense.monto) || 0;
+                if (categoryTotals.hasOwnProperty(category)) {
+                    categoryTotals[category] += amount;
+                } else {
+                    categoryTotals['otros'] += amount;
+                }
+            });
+
+            // Update chart data
+            expenseChart.data.datasets[0].data = [
+                categoryTotals.combustible,
+                categoryTotals.mantenimiento,
+                categoryTotals.peaje,
+                categoryTotals.multa,
+                categoryTotals.hospedaje,
+                categoryTotals.comida,
+                categoryTotals.otros
+            ];
+
+            expenseChart.update();
+        }
+
+        // Update Dashboard Stats
+        function updateDashboardStats(expenses) {
+            if (!expenses) return;
+
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            
+            // Filter expenses for current month
+            const monthlyExpenses = expenses.filter(expense => {
+                const expenseDate = new Date(expense.fecha);
+                return expenseDate.getMonth() === currentMonth && expenseDate.getFullYear() === currentYear;
+            });
+
+            // Calculate total monthly expenses
+            const totalMonthly = monthlyExpenses.reduce((sum, expense) => sum + parseFloat(expense.monto || 0), 0);
+            
+            // Calculate fuel consumption (liters)
+            const fuelExpenses = monthlyExpenses.filter(expense => expense.tipo === 'combustible');
+            const totalLiters = fuelExpenses.reduce((sum, expense) => sum + parseFloat(expense.litros || 0), 0);
+            
+            // Count maintenance activities
+            const maintenanceCount = monthlyExpenses.filter(expense => expense.tipo === 'mantenimiento').length;
+            
+            // Count total trips (estimate based on fuel entries)
+            const tripCount = fuelExpenses.length * 8; // Estimate 8 trips per fuel entry
+
+            // Update stat cards
+            document.querySelector('.stat-card:nth-child(1) .stat-value').textContent = `$${totalMonthly.toLocaleString()}`;
+            document.querySelector('.stat-card:nth-child(2) .stat-value').textContent = `${totalLiters.toLocaleString()} L`;
+            document.querySelector('.stat-card:nth-child(3) .stat-value').textContent = maintenanceCount;
+            document.querySelector('.stat-card:nth-child(4) .stat-value').textContent = tripCount;
+        }
+
+        // Update Activity Table
+        function updateActivityTable(expenses) {
+            if (!expenses) return;
+
+            const activityTable = document.getElementById('activityTable');
+            if (!activityTable) return;
+
+            // Get recent expenses (last 10)
+            const recentExpenses = expenses
+                .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+                .slice(0, 10);
+
+            activityTable.innerHTML = recentExpenses.map(expense => {
+                const badgeClass = getBadgeClass(expense.tipo);
+                const statusBadge = getStatusBadge(expense.estado);
+                const userName = expense.usuario_nombre || 'Usuario';
+                
+                return `
+                    <tr>
+                        <td>${formatDate(expense.fecha)}</td>
+                        <td>${userName}</td>
+                        <td><span class="badge ${badgeClass}">${getTypeIcon(expense.tipo)} ${capitalizeFirst(expense.tipo)}</span></td>
+                        <td>$${parseFloat(expense.monto || 0).toLocaleString()}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-edit" onclick="viewExpense(${expense.id})">👁️</button>
+                                ${currentUser && currentUser.role !== 'transportista' ? `<button class="btn-icon btn-delete" onclick="deleteExpense(${expense.id})">🗑️</button>` : ''}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Helper functions
+        function getBadgeClass(tipo) {
+            const classes = {
+                'combustible': 'badge-success',
+                'mantenimiento': 'badge-warning',
+                'peaje': 'badge-primary',
+                'multa': 'badge-danger',
+                'hospedaje': 'badge-info',
+                'comida': 'badge-secondary',
+                'otros': 'badge-light'
+            };
+            return classes[tipo] || 'badge-light';
+        }
+
+        function getTypeIcon(tipo) {
+            const icons = {
+                'combustible': '⛽',
+                'mantenimiento': '🔧',
+                'peaje': '🛣️',
+                'multa': '🚨',
+                'hospedaje': '🏨',
+                'comida': '🍴',
+                'otros': '📦'
+            };
+            return icons[tipo] || '📦';
+        }
+
+        function getStatusBadge(estado) {
+            const badges = {
+                'aprobado': '<span class="badge badge-success">Aprobado</span>',
+                'pendiente': '<span class="badge badge-warning">Pendiente</span>',
+                'rechazado': '<span class="badge badge-danger">Rechazado</span>'
+            };
+            return badges[estado] || '<span class="badge badge-warning">Pendiente</span>';
+        }
+
+        function capitalizeFirst(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('es-ES', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        // Load sample data for demonstration
+        function loadSampleData() {
+            const sampleExpenses = [
+                { id: 1, tipo: 'combustible', monto: 850, fecha: '2025-01-03', estado: 'aprobado', usuario_nombre: 'Juan Díaz', litros: 45 },
+                { id: 2, tipo: 'mantenimiento', monto: 2300, fecha: '2025-01-02', estado: 'pendiente', usuario_nombre: 'María López' },
+                { id: 3, tipo: 'multa', monto: 500, fecha: '2025-01-01', estado: 'aprobado', usuario_nombre: 'Carlos Ruiz' },
+                { id: 4, tipo: 'peaje', monto: 150, fecha: '2024-12-30', estado: 'aprobado', usuario_nombre: 'Ana García' },
+                { id: 5, tipo: 'hospedaje', monto: 800, fecha: '2024-12-29', estado: 'aprobado', usuario_nombre: 'Luis Martín' },
+                { id: 6, tipo: 'comida', monto: 250, fecha: '2024-12-28', estado: 'aprobado', usuario_nombre: 'Pedro Sánchez' },
+                { id: 7, tipo: 'combustible', monto: 920, fecha: '2024-12-27', estado: 'aprobado', usuario_nombre: 'Juan Díaz', litros: 50 },
+                { id: 8, tipo: 'otros', monto: 300, fecha: '2024-12-26', estado: 'pendiente', usuario_nombre: 'María López' }
+            ];
+            
+            updateExpenseChart(sampleExpenses);
+            updateDashboardStats(sampleExpenses);
+            updateActivityTable(sampleExpenses);
+        }
+
+        // Expense actions
+        function viewExpense(id) {
+            showToast(`Ver detalles del gasto #${id}`, 'success');
+        }
+
+        function deleteExpense(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar este gasto?')) {
+                showToast(`Gasto #${id} eliminado`, 'success');
+                // Reload data after deletion
+                setTimeout(() => loadDashboardData(), 1000);
+            }
+        }
+
+        // Handle expense form submission
+        document.getElementById('expenseForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            showToast('💾 Gasto registrado exitosamente', 'success');
+        });
+    </script>
+</body>
+</html>

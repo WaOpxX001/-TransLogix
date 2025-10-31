@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal Arreglado - Transportistas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* FORZAR ESTILOS PARA BANDERAS */
+        #countryCode {
+            font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif !important;
+            font-size: 20px !important;
+            font-variant-emoji: emoji !important;
+            line-height: 1.5 !important;
+        }
+        
+        #countryCode option {
+            font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif !important;
+            font-size: 18px !important;
+            padding: 10px !important;
+        }
+        
+        /* Asegurar que los emojis se rendericen */
+        select, option {
+            font-variant-emoji: emoji !important;
+        }
+        
+        .emoji-flag {
+            font-size: 24px !important;
+            margin-right: 8px !important;
+        }
+        
+        /* Estilos para imágenes de banderas */
+        .flag-img {
+            width: 20px !important;
+            height: 15px !important;
+            margin-right: 8px !important;
+            vertical-align: middle !important;
+        }
+        
+        /* Selector personalizado con banderas */
+        .country-select-wrapper {
+            position: relative;
+        }
+        
+        .country-select-display {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .country-select-display img {
+            width: 24px;
+            height: 18px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <button class="btn btn-primary" onclick="openModal()">Abrir Modal Arreglado</button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="testModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">🚛 Nuevo Transportista - ARREGLADO</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form id="testForm">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Nombre Completo *</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                <small class="text-muted">Solo letras, espacios y comas</small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Email *</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Teléfono</label>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="country-select-wrapper">
+                                            <div class="country-select-display" id="countryDisplay" onclick="toggleCountryDropdown()">
+                                                <img src="https://flagcdn.com/w40/mx.png" alt="México" class="flag-img">
+                                                <span>México (+52)</span>
+                                                <i class="fas fa-chevron-down ms-auto"></i>
+                                            </div>
+                                            <select class="form-select d-none" id="countryCode" name="country_code">
+                                                <option value="+52|10" data-flag="mx" data-name="México">México (+52)</option>
+                                                <option value="+1|10" data-flag="us" data-name="USA">USA (+1)</option>
+                                                <option value="+1|10" data-flag="ca" data-name="Canadá">Canadá (+1)</option>
+                                                <option value="+86|11" data-flag="cn" data-name="China">China (+86)</option>
+                                                <option value="+81|10" data-flag="jp" data-name="Japón">Japón (+81)</option>
+                                                <option value="+49|11" data-flag="de" data-name="Alemania">Alemania (+49)</option>
+                                                <option value="+33|10" data-flag="fr" data-name="Francia">Francia (+33)</option>
+                                                <option value="+44|10" data-flag="gb" data-name="Reino Unido">Reino Unido (+44)</option>
+                                                <option value="+39|10" data-flag="it" data-name="Italia">Italia (+39)</option>
+                                                <option value="+34|9" data-flag="es" data-name="España">España (+34)</option>
+                                                <option value="+55|11" data-flag="br" data-name="Brasil">Brasil (+55)</option>
+                                                <option value="+54|10" data-flag="ar" data-name="Argentina">Argentina (+54)</option>
+                                                <option value="+57|10" data-flag="co" data-name="Colombia">Colombia (+57)</option>
+                                                <option value="+51|9" data-flag="pe" data-name="Perú">Perú (+51)</option>
+                                                <option value="+56|9" data-flag="cl" data-name="Chile">Chile (+56)</option>
+                                                <option value="+58|10" data-flag="ve" data-name="Venezuela">Venezuela (+58)</option>
+                                                <option value="+593|9" data-flag="ec" data-name="Ecuador">Ecuador (+593)</option>
+                                                <option value="+591|8" data-flag="bo" data-name="Bolivia">Bolivia (+591)</option>
+                                                <option value="+595|9" data-flag="py" data-name="Paraguay">Paraguay (+595)</option>
+                                                <option value="+598|8" data-flag="uy" data-name="Uruguay">Uruguay (+598)</option>
+                                            </select>
+                                            <div class="dropdown-menu w-100 d-none" id="countryDropdown" style="max-height: 200px; overflow-y: auto;">
+                                                <div class="dropdown-item" onclick="selectCountry('+52|10', 'mx', 'México')">
+                                                    <img src="https://flagcdn.com/w40/mx.png" alt="México" class="flag-img"> México (+52)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+1|10', 'us', 'USA')">
+                                                    <img src="https://flagcdn.com/w40/us.png" alt="USA" class="flag-img"> USA (+1)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+1|10', 'ca', 'Canadá')">
+                                                    <img src="https://flagcdn.com/w40/ca.png" alt="Canadá" class="flag-img"> Canadá (+1)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+86|11', 'cn', 'China')">
+                                                    <img src="https://flagcdn.com/w40/cn.png" alt="China" class="flag-img"> China (+86)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+81|10', 'jp', 'Japón')">
+                                                    <img src="https://flagcdn.com/w40/jp.png" alt="Japón" class="flag-img"> Japón (+81)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+49|11', 'de', 'Alemania')">
+                                                    <img src="https://flagcdn.com/w40/de.png" alt="Alemania" class="flag-img"> Alemania (+49)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+33|10', 'fr', 'Francia')">
+                                                    <img src="https://flagcdn.com/w40/fr.png" alt="Francia" class="flag-img"> Francia (+33)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+44|10', 'gb', 'Reino Unido')">
+                                                    <img src="https://flagcdn.com/w40/gb.png" alt="Reino Unido" class="flag-img"> Reino Unido (+44)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+39|10', 'it', 'Italia')">
+                                                    <img src="https://flagcdn.com/w40/it.png" alt="Italia" class="flag-img"> Italia (+39)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+34|9', 'es', 'España')">
+                                                    <img src="https://flagcdn.com/w40/es.png" alt="España" class="flag-img"> España (+34)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+55|11', 'br', 'Brasil')">
+                                                    <img src="https://flagcdn.com/w40/br.png" alt="Brasil" class="flag-img"> Brasil (+55)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+54|10', 'ar', 'Argentina')">
+                                                    <img src="https://flagcdn.com/w40/ar.png" alt="Argentina" class="flag-img"> Argentina (+54)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+57|10', 'co', 'Colombia')">
+                                                    <img src="https://flagcdn.com/w40/co.png" alt="Colombia" class="flag-img"> Colombia (+57)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+51|9', 'pe', 'Perú')">
+                                                    <img src="https://flagcdn.com/w40/pe.png" alt="Perú" class="flag-img"> Perú (+51)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+56|9', 'cl', 'Chile')">
+                                                    <img src="https://flagcdn.com/w40/cl.png" alt="Chile" class="flag-img"> Chile (+56)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+58|10', 've', 'Venezuela')">
+                                                    <img src="https://flagcdn.com/w40/ve.png" alt="Venezuela" class="flag-img"> Venezuela (+58)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+593|9', 'ec', 'Ecuador')">
+                                                    <img src="https://flagcdn.com/w40/ec.png" alt="Ecuador" class="flag-img"> Ecuador (+593)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+591|8', 'bo', 'Bolivia')">
+                                                    <img src="https://flagcdn.com/w40/bo.png" alt="Bolivia" class="flag-img"> Bolivia (+591)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+595|9', 'py', 'Paraguay')">
+                                                    <img src="https://flagcdn.com/w40/py.png" alt="Paraguay" class="flag-img"> Paraguay (+595)
+                                                </div>
+                                                <div class="dropdown-item" onclick="selectCountry('+598|8', 'uy', 'Uruguay')">
+                                                    <img src="https://flagcdn.com/w40/uy.png" alt="Uruguay" class="flag-img"> Uruguay (+598)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="tel" class="form-control" id="phoneNumber" name="telefono" 
+                                               placeholder="Ingresa número telefónico" maxlength="11">
+                                        <small class="text-muted" id="phoneHelp">México: 10 dígitos</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Número de Licencia</label>
+                                <input type="text" class="form-control" name="licencia">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Contraseña Inicial *</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <small class="text-muted">Mínimo 6 caracteres</small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Confirmar Contraseña *</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+                                    <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="invalid-feedback" id="passwordError">Las contraseñas no coinciden</div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar Transportista</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function openModal() {
+            const modal = new bootstrap.Modal(document.getElementById('testModal'));
+            modal.show();
+            
+            // Configurar eventos después de mostrar
+            setTimeout(setupEvents, 100);
+        }
+        
+        function setupEvents() {
+            console.log('🔧 Configurando eventos...');
+            
+            // 1. BOTÓN DE CONTRASEÑA
+            const togglePassword = document.getElementById('togglePassword');
+            if (togglePassword) {
+                togglePassword.onclick = function(e) {
+                    e.preventDefault();
+                    const input = document.getElementById('password');
+                    const icon = this.querySelector('i');
+                    
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.className = 'fas fa-eye-slash';
+                        console.log('👁️ Contraseña visible');
+                    } else {
+                        input.type = 'password';
+                        icon.className = 'fas fa-eye';
+                        console.log('👁️ Contraseña oculta');
+                    }
+                };
+                console.log('✅ Botón contraseña configurado');
+            }
+            
+            // 2. BOTÓN DE CONFIRMAR CONTRASEÑA
+            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+            if (toggleConfirmPassword) {
+                toggleConfirmPassword.onclick = function(e) {
+                    e.preventDefault();
+                    const input = document.getElementById('confirmPassword');
+                    const icon = this.querySelector('i');
+                    
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.className = 'fas fa-eye-slash';
+                        console.log('👁️ Confirmar contraseña visible');
+                    } else {
+                        input.type = 'password';
+                        icon.className = 'fas fa-eye';
+                        console.log('👁️ Confirmar contraseña oculta');
+                    }
+                };
+                console.log('✅ Botón confirmar contraseña configurado');
+            }
+            
+            // 3. VALIDACIÓN DE NOMBRES
+            const nombreInput = document.getElementById('nombre');
+            if (nombreInput) {
+                nombreInput.oninput = function() {
+                    const original = this.value;
+                    const filtered = original.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s,\.]/g, '');
+                    
+                    if (original !== filtered) {
+                        this.value = filtered;
+                        this.style.borderColor = '#f59e0b';
+                        setTimeout(() => {
+                            this.style.borderColor = '';
+                        }, 500);
+                    }
+                };
+                console.log('✅ Validación nombres configurada');
+            }
+            
+            // 4. VALIDACIÓN DE TELÉFONO
+            const phoneInput = document.getElementById('phoneNumber');
+            const countrySelect = document.getElementById('countryCode');
+            
+            if (phoneInput && countrySelect) {
+                phoneInput.oninput = function() {
+                    this.value = this.value.replace(/\D/g, '');
+                    const [code, digits] = countrySelect.value.split('|');
+                    const expected = parseInt(digits);
+                    
+                    if (this.value.length === expected) {
+                        this.classList.add('is-valid');
+                        this.classList.remove('is-invalid');
+                    } else if (this.value.length > 0) {
+                        this.classList.add('is-invalid');
+                        this.classList.remove('is-valid');
+                    } else {
+                        this.classList.remove('is-valid', 'is-invalid');
+                    }
+                };
+                
+                countrySelect.onchange = function() {
+                    const [code, digits] = this.value.split('|');
+                    const expected = parseInt(digits);
+                    phoneInput.maxLength = expected;
+                    phoneInput.placeholder = `Ingresa ${expected} dígitos`;
+                    
+                    const phoneHelp = document.getElementById('phoneHelp');
+                    if (phoneHelp) {
+                        const countries = {
+                            '+52': 'México', '+1': 'USA/Canadá', '+86': 'China', '+81': 'Japón',
+                            '+49': 'Alemania', '+33': 'Francia', '+44': 'Reino Unido', '+39': 'Italia',
+                            '+34': 'España', '+55': 'Brasil', '+54': 'Argentina', '+57': 'Colombia',
+                            '+51': 'Perú', '+56': 'Chile'
+                        };
+                        const countryName = countries[code] || 'País';
+                        phoneHelp.textContent = `${countryName}: ${expected} dígitos`;
+                    }
+                };
+                
+                console.log('✅ Validación teléfono configurada');
+            }
+            
+            // 5. FORZAR ESTILOS DE BANDERAS
+            if (countrySelect) {
+                countrySelect.style.fontFamily = "'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif";
+                countrySelect.style.fontSize = "20px";
+                countrySelect.style.fontVariantEmoji = "emoji";
+                
+                Array.from(countrySelect.options).forEach(option => {
+                    option.style.fontFamily = "'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif";
+                    option.style.fontSize = "18px";
+                });
+                
+                console.log('🌍 Estilos de banderas aplicados');
+            }
+            
+            console.log('🎉 Todo configurado correctamente');
+        }
+        
+        // Funciones para el dropdown personalizado de países
+        function toggleCountryDropdown() {
+            const dropdown = document.getElementById('countryDropdown');
+            dropdown.classList.toggle('d-none');
+            dropdown.classList.toggle('show');
+        }
+        
+        function selectCountry(value, flag, name) {
+            // Actualizar el select oculto
+            const countrySelect = document.getElementById('countryCode');
+            countrySelect.value = value;
+            
+            // Actualizar la visualización
+            const display = document.getElementById('countryDisplay');
+            display.innerHTML = `
+                <img src="https://flagcdn.com/w40/${flag}.png" alt="${name}" class="flag-img">
+                <span>${name} (${value.split('|')[0]})</span>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            `;
+            
+            // Cerrar dropdown
+            const dropdown = document.getElementById('countryDropdown');
+            dropdown.classList.add('d-none');
+            dropdown.classList.remove('show');
+            
+            // Actualizar validación de teléfono
+            const phoneInput = document.getElementById('phoneNumber');
+            const [code, digits] = value.split('|');
+            const expected = parseInt(digits);
+            
+            phoneInput.maxLength = expected;
+            phoneInput.placeholder = `Ingresa ${expected} dígitos`;
+            
+            const phoneHelp = document.getElementById('phoneHelp');
+            phoneHelp.textContent = `${name}: ${expected} dígitos`;
+            
+            // Limpiar validación del teléfono
+            phoneInput.classList.remove('is-valid', 'is-invalid');
+            phoneInput.value = '';
+            
+            console.log(`🌍 País seleccionado: ${name} (${code}) - ${expected} dígitos`);
+        }
+        
+        // Cerrar dropdown al hacer click fuera
+        document.addEventListener('click', function(event) {
+            const wrapper = document.querySelector('.country-select-wrapper');
+            const dropdown = document.getElementById('countryDropdown');
+            
+            if (wrapper && !wrapper.contains(event.target)) {
+                dropdown.classList.add('d-none');
+                dropdown.classList.remove('show');
+            }
+        });
+        
+        // Configurar form submit
+        document.getElementById('testForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            console.log('📝 Datos del formulario:', data);
+            alert('Formulario enviado correctamente!\nRevisa la consola para ver los datos.');
+        };
+    </script>
+</body>
+</html>
