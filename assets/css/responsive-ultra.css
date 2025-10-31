@@ -1,4 +1,4 @@
-/* 📱 Responsive Ultra - VERSIÓN FINAL SIN OVERLAY */
+/* 📱 Responsive Ultra - CONTENIDO CENTRADO EN MÓVIL */
 
 /* === MÓVILES (< 768px) === */
 @media (max-width: 768px) {
@@ -10,37 +10,49 @@
         pointer-events: none !important;
     }
     
-    /* Main content sin margen */
+    /* Main content CENTRADO - NO se mueve cuando se abre el sidebar */
     .main-content {
         margin-left: 0 !important;
+        margin-right: 0 !important;
         padding: 15px !important;
+        width: 100% !important;
+        position: relative !important;
+        left: 0 !important;  /* Siempre centrado */
+        transition: none !important;  /* Sin animación */
+    }
+    
+    /* Dashboard container centrado */
+    .dashboard {
+        display: flex !important;
+        flex-direction: column !important;
         width: 100% !important;
     }
     
-    /* Sidebar - MÁS PEQUEÑO para que no cubra toda la pantalla */
+    /* Sidebar - Se superpone al contenido, NO lo empuja */
     .sidebar {
         position: fixed !important;
         left: -280px !important;  /* Oculto por defecto */
-        width: 250px !important;  /* Más pequeño */
-        max-width: 70vw !important;  /* Máximo 70% de la pantalla */
+        width: 250px !important;
+        max-width: 70vw !important;
         top: 0 !important;
         bottom: 0 !important;
         z-index: 9999 !important;
         transition: left 0.3s ease !important;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.3) !important;
+        box-shadow: 2px 0 15px rgba(0,0,0,0.4) !important;
+        overflow-y: auto !important;
     }
     
     .sidebar.show {
         left: 0 !important;
     }
     
-    /* Botón de menú */
+    /* Botón de menú - Siempre visible en la esquina */
     .mobile-toggle {
         display: block !important;
         position: fixed !important;
         top: 10px !important;
         left: 10px !important;
-        z-index: 10000 !important;  /* Por encima del sidebar */
+        z-index: 10000 !important;
         background: #6366f1 !important;
         color: white !important;
         border: none !important;
@@ -73,7 +85,7 @@
         justify-content: center !important;
     }
     
-    /* Grupos de botones en grid */
+    /* Grupos de botones en grid de 3 columnas */
     .btn-group,
     .d-flex.gap-2,
     .d-flex.gap-1 {
@@ -270,6 +282,18 @@
     .modal-footer .btn {
         flex: 1 !important;
         margin: 0 5px !important;
+    }
+    
+    /* ========================================
+       CARDS Y CONTENIDO
+       ======================================== */
+    
+    .card {
+        margin-bottom: 15px !important;
+    }
+    
+    .stat-card {
+        margin-bottom: 15px !important;
     }
 }
 
